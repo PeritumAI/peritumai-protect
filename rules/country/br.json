@@ -1,0 +1,37 @@
+{
+  "id": "country.br",
+  "name": "Brazil",
+  "version": "1.0.0",
+  "description": "CPF and CNPJ.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "br.cpf",
+      "label": "CPF",
+      "displayLabel": "CPF",
+      "plural": "CPFs",
+      "kind": "checksum",
+      "algorithm": "cpf",
+      "placeholder": "CPF",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["CPF"],
+      "notes": "Eleven digits. Two check digits. A number of all the same digit is not a CPF. The dotted form is found without a label. An unformatted number needs a nearby label."
+    },
+    {
+      "id": "br.cnpj",
+      "label": "CNPJ",
+      "displayLabel": "CNPJ",
+      "plural": "CNPJs",
+      "kind": "checksum",
+      "algorithm": "cnpj",
+      "placeholder": "CNPJ",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["CNPJ"],
+      "notes": "Fourteen digits. Two check digits. A number of all the same digit is not a CNPJ. The printed form is found without a label. An unformatted number needs a nearby label."
+    }
+  ]
+}

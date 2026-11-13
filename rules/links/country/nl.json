@@ -1,0 +1,19 @@
+{
+  "country": "NL",
+  "brands": [
+    {"name":"Rabobank","domains":["rabobank.nl"],"keywords":["rabobank"]},
+    {"name":"ABN AMRO","domains":["abnamro.nl"],"keywords":["abnamro"]},
+    {"name":"SNS","domains":["snsbank.nl"],"keywords":["snsbank"]},
+    {"name":"Knab","domains":["knab.nl"],"keywords":["knab"]},
+    {"name":"Triodos","domains":["triodos.nl"],"keywords":["triodos"]},
+    {"name":"bunq","domains":["bunq.com"],"keywords":["bunq"]},
+    {"name":"PostNL","domains":["postnl.nl"],"keywords":["postnl"]},
+    {"name":"Belastingdienst","domains":["belastingdienst.nl"],"keywords":["belastingdienst"]},
+    {"name":"DigiD","domains":["digid.nl"],"keywords":["digid"]},
+    {"name":"KPN","domains":["kpn.com"],"keywords":["kpn"]},
+    {"name":"Odido","domains":["odido.nl"],"keywords":["odido"]},
+    {"name":"bol","domains":["bol.com"],"keywords":["bolcom"]},
+    {"name":"Coolblue","domains":["coolblue.nl"],"keywords":["coolblue"]},
+    {"name":"Albert Heijn","domains":["ah.nl"],"keywords":["albertheijn"]}
+  ]
+}

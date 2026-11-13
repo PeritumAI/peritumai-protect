@@ -1,0 +1,23 @@
+{
+  "id": "builtin.court.us",
+  "name": "United States federal courts",
+  "version": "1.0.0",
+  "enabled": true,
+  "description": "Off until you turn it on. Verified from PACER's own manual.",
+  "rules": [
+    {
+      "id": "court.us.federal",
+      "label": "US federal case number",
+      "displayLabel": "US federal case number",
+      "plural": "US federal case numbers",
+      "kind": "regex",
+      "pattern": "\\b\\d:\\d{2}-(?:cv|cr|bk)-\\d{3,6}\\b",
+      "placeholder": "CASE",
+      "severity": "high",
+      "enabled": false,
+      "category": "court-us",
+      "reversible": true,
+      "notes": "TODO: Why is this risky? Office, two-digit year, type cv/cr/bk, and the case number, as in 1:05-cv-06794. Source: https://pacer.uscourts.gov/sites/default/files/files/PACER-User-Manual_2026.pdf"
+    }
+  ]
+}

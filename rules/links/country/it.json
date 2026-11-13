@@ -1,0 +1,20 @@
+{
+  "country": "IT",
+  "brands": [
+    {"name":"Banco BPM","domains":["bancobpm.it"],"keywords":["bancobpm"]},
+    {"name":"Monte dei Paschi","domains":["mps.it"],"keywords":["montepaschi"]},
+    {"name":"BPER","domains":["bper.it"],"keywords":["bper"]},
+    {"name":"Fineco","domains":["finecobank.com"],"keywords":["fineco"]},
+    {"name":"Poste Italiane","domains":["poste.it"],"keywords":["poste"]},
+    {"name":"Agenzia Entrate","domains":["gov.it"],"keywords":["agenziaentrate","spid"]},
+    {"name":"TIM","domains":["tim.it"],"keywords":["timit"]},
+    {"name":"WindTre","domains":["windtre.it"],"keywords":["windtre"]},
+    {"name":"iliad","domains":["iliad.it"],"keywords":["iliad"]},
+    {"name":"Fastweb","domains":["fastweb.it"],"keywords":["fastweb"]},
+    {"name":"Esselunga","domains":["esselunga.it"],"keywords":["esselunga"]},
+    {"name":"MediaWorld","domains":["mediaworld.it"],"keywords":["mediaworld"]},
+    {"name":"Unieuro","domains":["unieuro.it"],"keywords":["unieuro"]},
+    {"name":"Subito","domains":["subito.it"],"keywords":["subito"]},
+    {"name":"Enel","domains":["enel.it"],"keywords":["enel"]}
+  ]
+}

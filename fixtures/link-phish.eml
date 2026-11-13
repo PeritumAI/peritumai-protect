@@ -1,0 +1,9 @@
+From: Accounts <billing@account-verify.example>
+To: Ada <ada@example.com>
+Subject: Sign in
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+
+<html><body>
+<p>Please open <a href="https://account-verify.example/login">https://www.paypal.com/signin</a>.</p>
+</body></html>

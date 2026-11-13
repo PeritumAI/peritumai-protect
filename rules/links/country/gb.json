@@ -1,0 +1,21 @@
+{
+  "country": "GB",
+  "brands": [
+    {"name":"Halifax","domains":["halifax.co.uk"],"keywords":["halifax"]},
+    {"name":"Bank of Scotland","domains":["bankofscotland.co.uk"],"keywords":["bankofscotland"]},
+    {"name":"TSB","domains":["tsb.co.uk"],"keywords":["tsb"]},
+    {"name":"first direct","domains":["firstdirect.com"],"keywords":["firstdirect"]},
+    {"name":"Royal Mail","domains":["royalmail.com"],"keywords":["royalmail"]},
+    {"name":"GOV.UK","domains":["gov.uk"],"keywords":["hmrc"]},
+    {"name":"Evri","domains":["evri.com"],"keywords":["evri"]},
+    {"name":"Tesco","domains":["tesco.com"],"keywords":["tesco"]},
+    {"name":"Argos","domains":["argos.co.uk"],"keywords":["argos"]},
+    {"name":"John Lewis","domains":["johnlewis.com"],"keywords":["johnlewis"]},
+    {"name":"Currys","domains":["currys.co.uk"],"keywords":["currys"]},
+    {"name":"EE","domains":["ee.co.uk"],"keywords":["ee"]},
+    {"name":"O2","domains":["o2.co.uk"],"keywords":["o2uk"]},
+    {"name":"BT","domains":["bt.com"],"keywords":["bt"]},
+    {"name":"Three","domains":["three.co.uk"],"keywords":["threeuk"]},
+    {"name":"Parcelforce","domains":["parcelforce.com"],"keywords":["parcelforce"]}
+  ]
+}

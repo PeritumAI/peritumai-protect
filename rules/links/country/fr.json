@@ -1,0 +1,21 @@
+{
+  "country": "FR",
+  "brands": [
+    {"name":"Crédit Agricole","domains":["credit-agricole.fr"],"keywords":["creditagricole"]},
+    {"name":"Société Générale","domains":["societegenerale.fr"],"keywords":["societegenerale"]},
+    {"name":"La Banque Postale","domains":["labanquepostale.fr"],"keywords":["labanquepostale"]},
+    {"name":"Boursorama","domains":["boursorama.com"],"keywords":["boursorama"]},
+    {"name":"Crédit Mutuel","domains":["creditmutuel.fr"],"keywords":["creditmutuel"]},
+    {"name":"LCL","domains":["lcl.fr"],"keywords":["lcl"]},
+    {"name":"Caisse d'Épargne","domains":["caisse-epargne.fr"],"keywords":["caisseepargne"]},
+    {"name":"La Poste","domains":["laposte.fr"],"keywords":["laposte"]},
+    {"name":"Chronopost","domains":["chronopost.fr"],"keywords":["chronopost"]},
+    {"name":"Mondial Relay","domains":["mondialrelay.fr"],"keywords":["mondialrelay"]},
+    {"name":"Service-Public","domains":["gouv.fr"],"keywords":["servicepublic","impots"]},
+    {"name":"SFR","domains":["sfr.fr"],"keywords":["sfr"]},
+    {"name":"Free","domains":["free.fr"],"keywords":["freefr"]},
+    {"name":"Bouygues Telecom","domains":["bouyguestelecom.fr"],"keywords":["bouygues"]},
+    {"name":"Fnac","domains":["fnac.com"],"keywords":["fnac"]},
+    {"name":"Cdiscount","domains":["cdiscount.com"],"keywords":["cdiscount"]}
+  ]
+}

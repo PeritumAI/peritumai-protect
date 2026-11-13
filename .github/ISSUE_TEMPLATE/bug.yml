@@ -1,0 +1,43 @@
+name: Bug report
+description: Something in PeritumAI Protect does not work as described.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Please use **made-up data only**. Never paste real personal data, real passwords or real keys.
+        Security problems go to security@peritumai.com, not here.
+  - type: input
+    id: version
+    attributes:
+      label: PeritumAI Protect version
+      description: Shown on the Help page.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: What did you do?
+      description: Steps to reproduce, with a made-up example if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Error log (optional)
+      description: If the app showed an error, paste the matching lines from the local error log. Remove anything private first.
+      render: text

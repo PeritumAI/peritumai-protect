@@ -1,0 +1,36 @@
+{
+  "id": "country.de",
+  "name": "Germany",
+  "version": "1.0.0",
+  "description": "Steuer-ID and German phone numbers.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "de.steuerid",
+      "label": "Steuer-ID",
+      "displayLabel": "Steuer-ID",
+      "plural": "Steuer-IDs",
+      "kind": "checksum",
+      "algorithm": "steuerid",
+      "placeholder": "STEUER_ID",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["Steuer-ID", "Steueridentifikationsnummer", "IdNr"],
+      "notes": "Eleven digits. The first digit is not 0. One digit in the first ten is repeated, and the last digit is the ISO 7064 check. The grouped form is found without a label. An unformatted number needs a nearby label."
+    },
+    {
+      "id": "de.phone",
+      "label": "German phone",
+      "displayLabel": "German phone",
+      "plural": "German phones",
+      "kind": "phone",
+      "patterns": ["^\\+49[1-9]\\d{6,12}$", "^0(?!6)(?:1[5-7]|[2-9])\\d{5,12}$"],
+      "placeholder": "PHONE",
+      "severity": "warn",
+      "enabled": false,
+      "category": "personal",
+      "notes": "International +49, or a national number that does not use the Serbian 06 mobile shape."
+    }
+  ]
+}

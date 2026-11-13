@@ -1,0 +1,19 @@
+{
+  "country": "BR",
+  "brands": [
+    {"name":"Itaú","domains":["itau.com.br"],"keywords":["itau"]},
+    {"name":"Bradesco","domains":["bradesco.com.br"],"keywords":["bradesco"]},
+    {"name":"Banco do Brasil","domains":["bb.com.br"],"keywords":["bancodobrasil"]},
+    {"name":"gov.br","domains":["gov.br"],"keywords":["receita","caixa"]},
+    {"name":"Nubank","domains":["nubank.com.br"],"keywords":["nubank"]},
+    {"name":"Inter","domains":["inter.co"],"keywords":["interco"]},
+    {"name":"C6 Bank","domains":["c6bank.com.br"],"keywords":["c6bank"]},
+    {"name":"Correios","domains":["correios.com.br"],"keywords":["correios"]},
+    {"name":"Mercado Livre","domains":["mercadolivre.com.br"],"keywords":["mercadolivre"]},
+    {"name":"Magazine Luiza","domains":["magazineluiza.com.br"],"keywords":["magazineluiza"]},
+    {"name":"Americanas","domains":["americanas.com.br"],"keywords":["americanas"]},
+    {"name":"Vivo","domains":["vivo.com.br"],"keywords":["vivo"]},
+    {"name":"Claro","domains":["claro.com.br"],"keywords":["claro"]},
+    {"name":"TIM Brasil","domains":["tim.com.br"],"keywords":["timbrasil"]}
+  ]
+}

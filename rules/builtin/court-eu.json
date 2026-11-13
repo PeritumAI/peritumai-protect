@@ -1,0 +1,23 @@
+{
+  "id": "builtin.court.eu",
+  "name": "Court of Justice of the European Union",
+  "version": "1.0.0",
+  "enabled": true,
+  "description": "Off until you turn it on. Verified from the Court's own citation page.",
+  "rules": [
+    {
+      "id": "court.eu.cjeu",
+      "label": "EU court case number",
+      "displayLabel": "EU court case number",
+      "plural": "EU court case numbers",
+      "kind": "regex",
+      "pattern": "\\b[CTF]-\\d{1,5}/\\d{2}\\b",
+      "placeholder": "CASE",
+      "severity": "high",
+      "enabled": false,
+      "category": "court-eu",
+      "reversible": true,
+      "notes": "TODO: Why is this risky? C for the Court of Justice, T for the General Court, F for the former Civil Service Tribunal, then the number and year, as in C-250/25. Source: https://curia.europa.eu/site/jcms/d2_5132/en/case-names-and-citations"
+    }
+  ]
+}

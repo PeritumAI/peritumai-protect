@@ -1,0 +1,22 @@
+{
+  "id": "country.mk",
+  "name": "North Macedonia",
+  "version": "1.0.0",
+  "description": "EMBG, the North Macedonian personal identification number.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "mk.embg",
+      "label": "EMBG",
+      "displayLabel": "EMBG",
+      "plural": "EMBGs",
+      "kind": "checksum",
+      "algorithm": "jmbg-mk",
+      "placeholder": "EMBG",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "Thirteen digits with the JMBG check. The register is 41 to 49, or 04 for a foreigner registered in North Macedonia."
+    }
+  ]
+}

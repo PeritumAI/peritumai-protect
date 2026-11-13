@@ -1,0 +1,33 @@
+{
+  "id": "developer",
+  "name": "Developer",
+  "description": "Every key and token check, including high-entropy strings. The clipboard warning highlights Stop.",
+  "enabledRuleIds": [
+    "secret.aws_access_key",
+    "secret.github_pat",
+    "secret.stripe",
+    "secret.slack",
+    "secret.openai_sk",
+    "secret.jwt",
+    "secret.pem",
+    "secret.entropy",
+    "secret.google_api",
+    "secret.aws_temp",
+    "secret.aws_secret",
+    "secret.gitlab",
+    "secret.huggingface",
+    "secret.sendgrid",
+    "secret.npm",
+    "secret.anthropic",
+    "secret.twilio",
+    "secret.azure",
+    "secret.connection",
+    "secret.password_assignment",
+    "secret.discord"
+  ],
+  "disabledRuleIds": [],
+  "defaultPasteAction": "stop",
+  "redactionMode": "reversible",
+  "stopBehavior": "restore-previous",
+  "suggestedTerms": []
+}

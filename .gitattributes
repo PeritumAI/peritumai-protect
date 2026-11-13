@@ -1,0 +1,10 @@
+# Keep LF everywhere. Some tests compare embedded text with "\n", so a CRLF checkout would break them.
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.jpg binary
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.pptx binary
+*.zip binary

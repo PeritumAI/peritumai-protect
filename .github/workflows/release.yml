@@ -1,0 +1,61 @@
+# Builds a release when a tag like v1.2.3 is pushed. It creates a DRAFT GitHub release with the installer, the portable
+# zip and SHA256SUMS.txt, plus build provenance attestations. Review the draft, then press Publish by hand.
+# Signing (SignPath) is added in step 5 of docs/RELEASING.md once the project is approved.
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      DOTNET_NOLOGO: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Build release files
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart("v")
+          ./build/publish-release.ps1 -Version $version
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            artifacts/*.exe
+            artifacts/*.zip
+
+      - name: Create draft release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $version = $tag.TrimStart("v")
+          # Release notes = the matching CHANGELOG.md section.
+          $lines = Get-Content CHANGELOG.md
+          $start = ($lines | Select-String -Pattern ("^## \[" + [regex]::Escape($version) + "\]")).LineNumber
+          $rest = $lines[$start..($lines.Count - 1)]
+          $end = ($rest | Select-String -Pattern "^## \[" | Select-Object -First 1).LineNumber
+          if ($end) { $notes = $rest[0..($end - 2)] } else { $notes = $rest }
+          $notes += ""
+          $notes += "Check your download: compare its SHA-256 with SHA256SUMS.txt, or run"
+          $notes += "``gh attestation verify <file> --repo ${{ github.repository }}``."
+          Set-Content -Path release-notes.md -Value $notes -Encoding utf8
+          $files = Get-ChildItem artifacts -File | ForEach-Object { $_.FullName }
+          gh release create $tag --draft --verify-tag --title "PeritumAI Protect $version" --notes-file release-notes.md @files

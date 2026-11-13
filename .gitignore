@@ -1,0 +1,10 @@
+bin/
+obj/
+.vs/
+*.user
+TestResults/
+*.nupkg
+artifacts/
+*.dmp
+TestResults/
+.superpowers/

@@ -1,0 +1,14 @@
+name: Idea or request
+description: Suggest a new check, rule, framework or feature.
+labels: [idea]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What do you need, and why?
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example (made-up data only)

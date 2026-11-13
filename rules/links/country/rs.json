@@ -1,0 +1,23 @@
+{
+  "country": "RS",
+  "brands": [
+    {"name":"AIK Banka","domains":["aikbanka.rs"],"keywords":["aikbanka"]},
+    {"name":"NLB Komercijalna","domains":["nlbkb.rs"],"keywords":["nlbkb"]},
+    {"name":"Banka Poštanska štedionica","domains":["posted.co.rs"],"keywords":["posted"]},
+    {"name":"Addiko","domains":["addiko.rs","addiko.com"],"keywords":["addiko"]},
+    {"name":"ProCredit Bank","domains":["procreditbank.rs"],"keywords":["procredit"]},
+    {"name":"Eurobank Direktna","domains":["eurobank-direktna.rs"],"keywords":["eurobank"]},
+    {"name":"Yettel","domains":["yettel.rs"],"keywords":["yettel"]},
+    {"name":"mts","domains":["mts.rs"],"keywords":[{"word":"mts","commonWord":true}]},
+    {"name":"A1 Srbija","domains":["a1.rs"],"keywords":["a1srbija"]},
+    {"name":"Banca Intesa","domains":["bancaintesa.rs"],"keywords":["bancaintesa"]},
+    {"name":"UniCredit Bank Srbija","domains":["unicreditbank.rs"],"keywords":["unicreditbank"]},
+    {"name":"Raiffeisen banka","domains":["raiffeisenbank.rs"],"keywords":["raiffeisenbank"]},
+    {"name":"OTP banka","domains":["otpbanka.rs"],"keywords":["otpbanka"]},
+    {"name":"Pošta Srbije","domains":["posta.rs"],"keywords":[{"word":"posta","commonWord":true}]},
+    {"name":"eUprava","domains":["gov.rs"],"keywords":["euprava"]},
+    {"name":"Gigatron","domains":["gigatron.rs"],"keywords":["gigatron"]},
+    {"name":"Ananas","domains":["ananas.rs"],"keywords":[{"word":"ananas","commonWord":true}]},
+    {"name":"Tehnomanija","domains":["tehnomanija.rs"],"keywords":["tehnomanija"]}
+  ]
+}

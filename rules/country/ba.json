@@ -1,0 +1,22 @@
+{
+  "id": "country.ba",
+  "name": "Bosnia and Herzegovina",
+  "version": "1.0.0",
+  "description": "The Bosnian JMBG.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "ba.jmbg",
+      "label": "Bosnian JMBG",
+      "displayLabel": "Bosnian JMBG",
+      "plural": "Bosnian JMBGs",
+      "kind": "checksum",
+      "algorithm": "jmbg-ba",
+      "placeholder": "JMBG",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "Thirteen digits with the JMBG check. The register is 10 to 19, or 01 for a foreigner registered in Bosnia and Herzegovina."
+    }
+  ]
+}

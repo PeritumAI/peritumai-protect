@@ -1,0 +1,18 @@
+{
+  "id": "journalist",
+  "name": "Journalist",
+  "description": "Emails, phones, and a place for source names you add.",
+  "enabledRuleIds": ["pii.email", "pii.phone"],
+  "disabledRuleIds": ["secret.entropy"],
+  "defaultPasteAction": "ask",
+  "redactionMode": "reversible",
+  "stopBehavior": "restore-previous",
+  "suggestedTerms": [
+    {
+      "label": "Source name",
+      "kind": "exact",
+      "text": "Source Example",
+      "example": "Source Example"
+    }
+  ]
+}

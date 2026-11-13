@@ -1,0 +1,22 @@
+{
+  "id": "country.me",
+  "name": "Montenegro",
+  "version": "1.0.0",
+  "description": "The Montenegrin JMBG.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "me.jmbg",
+      "label": "Montenegrin JMBG",
+      "displayLabel": "Montenegrin JMBG",
+      "plural": "Montenegrin JMBGs",
+      "kind": "checksum",
+      "algorithm": "jmbg-me",
+      "placeholder": "JMBG",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "Thirteen digits with the JMBG check. The register is 21 to 29, or 02 for a foreigner registered in Montenegro."
+    }
+  ]
+}

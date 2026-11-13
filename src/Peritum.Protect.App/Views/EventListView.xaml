@@ -1,0 +1,193 @@
+<UserControl x:Class="Peritum.Protect.App.Views.EventListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Peritum.Protect.App"
+             Background="{DynamicResource Background}">
+  <UserControl.Resources>
+    <Style x:Key="FilterChip" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Margin" Value="0,0,8,0"/>
+      <Setter Property="Padding" Value="12,6"/>
+      <Setter Property="MinHeight" Value="32"/>
+    </Style>
+  </UserControl.Resources>
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+          <Button Content="{local:Loc exportStats}"
+                  Click="OnExportStats"
+                  Margin="0,0,8,0"
+                  VerticalAlignment="Top"
+                  AutomationProperties.Name="{local:Loc exportStatsName}"/>
+          <Button Content="{local:Loc exportLog}"
+                  Click="OnExport"
+                  VerticalAlignment="Top"
+                  AutomationProperties.Name="{local:Loc exportLog}"/>
+          <CheckBox Content="{local:Loc includeLocations}"
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    IsChecked="{Binding IncludePathsInExport}"
+                    AutomationProperties.Name="{local:Loc includeLocations}"/>
+        </StackPanel>
+        <TextBlock Text="{local:Loc activityPrivacy}"
+                   Foreground="{DynamicResource Muted}"
+                   Margin="0,4,12,0"
+                   VerticalAlignment="Center"/>
+      </DockPanel>
+      <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+        <Button Content="{local:Loc filterAll}" Command="{Binding FilterActivityCommand}" CommandParameter="all" AutomationProperties.Name="{local:Loc filterAllName}">
+          <Button.Style>
+            <Style TargetType="Button" BasedOn="{StaticResource FilterChip}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding ActivityFilter}" Value="all">
+                  <Setter Property="Background" Value="{DynamicResource Accent}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource OnAccent}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Button.Style>
+        </Button>
+        <Button Content="{local:Loc filterClipboard}" Command="{Binding FilterActivityCommand}" CommandParameter="clipboard" AutomationProperties.Name="{local:Loc filterClipboardName}">
+          <Button.Style>
+            <Style TargetType="Button" BasedOn="{StaticResource FilterChip}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding ActivityFilter}" Value="clipboard">
+                  <Setter Property="Background" Value="{DynamicResource Accent}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource OnAccent}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Button.Style>
+        </Button>
+        <Button Content="{local:Loc filterFiles}" Command="{Binding FilterActivityCommand}" CommandParameter="files" AutomationProperties.Name="{local:Loc filterFilesName}">
+          <Button.Style>
+            <Style TargetType="Button" BasedOn="{StaticResource FilterChip}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding ActivityFilter}" Value="files">
+                  <Setter Property="Background" Value="{DynamicResource Accent}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource OnAccent}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Button.Style>
+        </Button>
+        <Button Content="{local:Loc filterErrors}" Command="{Binding FilterActivityCommand}" CommandParameter="errors" AutomationProperties.Name="{local:Loc filterErrorsName}">
+          <Button.Style>
+            <Style TargetType="Button" BasedOn="{StaticResource FilterChip}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding ActivityFilter}" Value="errors">
+                  <Setter Property="Background" Value="{DynamicResource Accent}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource OnAccent}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Button.Style>
+        </Button>
+        <Button Content="{local:Loc reportPdf}" Click="OnMonthlyPdf" AutomationProperties.Name="{local:Loc reportPdfName}">
+          <Button.Style>
+            <Style TargetType="Button" BasedOn="{StaticResource FilterChip}"/>
+          </Button.Style>
+        </Button>
+        <Button Content="{local:Loc reportCsv}" Click="OnMonthlyCsv" AutomationProperties.Name="{local:Loc reportCsvName}">
+          <Button.Style>
+            <Style TargetType="Button" BasedOn="{StaticResource FilterChip}"/>
+          </Button.Style>
+        </Button>
+        <CheckBox Content="{local:Loc fileNames}"
+                  Margin="8,0,0,0"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding IncludeReportFileNames}"
+                  AutomationProperties.Name="{local:Loc includeFileNamesName}"/>
+      </StackPanel>
+      <TextBlock Text="{local:Loc trialStats}"
+                 FontWeight="SemiBold"
+                 Margin="0,8,0,2"/>
+      <TextBlock Text="{Binding StatsText}"
+                 TextWrapping="Wrap"
+                 Foreground="{DynamicResource Muted}"/>
+    </StackPanel>
+    <Grid>
+      <TextBlock Text="{local:Loc emptyActivity}"
+                 Foreground="{DynamicResource Muted}"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 TextAlignment="Center"
+                 MaxWidth="420">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding Events.Count}" Value="0">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+      </TextBlock>
+      <ListBox ItemsSource="{Binding Events}">
+        <ListBox.Style>
+          <Style TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding Events.Count}" Value="0">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="IsHitTestVisible" Value="False"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </ListBox.Style>
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+              <StackPanel Margin="0,1,0,2">
+              <TextBlock Text="{Binding DayHeader}" FontWeight="SemiBold" Margin="0,8,0,4">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding DayHeader}" Value="">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+              <TextBlock TextWrapping="Wrap">
+                <Run Text="{Binding When, Mode=OneWay}"/>
+                <Run Text="  "/>
+                <Run Text="{Binding SourceLabel, Mode=OneWay}"/>
+                <Run Text="  "/>
+                <Run Text="{Binding ActionLabel, Mode=OneWay}"/>
+                <Run Text="  "/>
+                <Run Text="{Binding Summary, Mode=OneWay}"/>
+              </TextBlock>
+              <TextBlock Text="{Binding Note}" Foreground="{DynamicResource Muted}" TextWrapping="Wrap" FontSize="12" Margin="0,2,0,0">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="Foreground" Value="{DynamicResource Muted}"/>
+                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="Margin" Value="0,2,0,0"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding Note}" Value="">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+              <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                <Button Content="{local:Loc openFile}" MinHeight="26" Height="26" MaxHeight="26" Padding="8,0" Margin="0,0,6,0" FontSize="12" Command="{Binding DataContext.OpenActivityFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding FilePath}" Visibility="{Binding CanOpen, Converter={StaticResource BoolVis}}" AutomationProperties.Name="{local:Loc openFile}"/>
+                <Button Content="{local:Loc showInFolder}" MinHeight="26" Height="26" MaxHeight="26" Padding="8,0" Margin="0,0,6,0" FontSize="12" Command="{Binding DataContext.ShowActivityFolderCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding FilePath}" Visibility="{Binding CanShowFolder, Converter={StaticResource BoolVis}}" AutomationProperties.Name="{local:Loc showInFolder}"/>
+                <Button Content="{local:Loc checkAgain}" MinHeight="26" Height="26" MaxHeight="26" Padding="8,0" Margin="0,0,6,0" FontSize="12" Command="{Binding DataContext.CheckAgainCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding FilePath}" Visibility="{Binding CanCheckAgain, Converter={StaticResource BoolVis}}" AutomationProperties.Name="{local:Loc checkAgain}"/>
+                <Button Content="{local:Loc openProtectedCopy}" MinHeight="26" Height="26" MaxHeight="26" Padding="8,0" Margin="0" FontSize="12" Command="{Binding DataContext.OpenActivityFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding CopyPath}" Visibility="{Binding CanOpenCopy, Converter={StaticResource BoolVis}}" AutomationProperties.Name="{local:Loc openProtectedCopy}"/>
+              </StackPanel>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+  </DockPanel>
+</UserControl>

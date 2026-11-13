@@ -1,0 +1,532 @@
+<UserControl x:Class="Peritum.Protect.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Peritum.Protect.App.Views"
+             xmlns:ui="clr-namespace:Peritum.Protect.App"
+             Background="{DynamicResource Background}">
+  <UserControl.Resources>
+    <local:ProfileNameConverter x:Key="ProfileName"/>
+    <Style x:Key="SettingsCard" TargetType="Border">
+      <Setter Property="Background" Value="{DynamicResource Card}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="Padding" Value="16"/>
+      <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+  </UserControl.Resources>
+  <DockPanel>
+    <Border DockPanel.Dock="Bottom"
+            Background="{DynamicResource Background}"
+            BorderBrush="{DynamicResource Line}"
+            BorderThickness="0,1,0,0"
+            Padding="0,12,0,0">
+      <WrapPanel>
+        <Button Content="{ui:Loc saveChanges}"
+                Style="{StaticResource PrimaryButton}"
+                Command="{Binding SaveCommand}"/>
+        <Button Content="{ui:Loc backToCheck}" Click="OnBack"/>
+        <TextBlock Text="{Binding Status}"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource Muted}"
+                   Margin="8,0,0,8"/>
+      </WrapPanel>
+    </Border>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" AutomationProperties.AutomationId="SettingsScroll">
+      <StackPanel Margin="4,0,12,8" MaxWidth="760" HorizontalAlignment="Left">
+        <TextBlock Text="{Binding PolicyWarning}"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource Warning}"
+                   Margin="0,0,0,8">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+              <Setter Property="Visibility" Value="Visible"/>
+              <Style.Triggers>
+                <Trigger Property="Text" Value="">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="Text" Value="{x:Null}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <TextBlock Text="{ui:Loc settingsLocal}"
+                   Foreground="{DynamicResource Muted}"
+                   Margin="0,0,0,8"/>
+
+        <TextBlock Text="{ui:Loc sectionProtection}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-protection"/>
+        <Border Style="{StaticResource SettingsCard}">
+          <StackPanel>
+            <DockPanel Margin="0,0,0,8" LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Visibility="{Binding ShowProfileLock, Converter={StaticResource BoolVis}}"/>
+              <StackPanel>
+                <TextBlock Text="{ui:Loc profile}" Margin="0,0,0,4"/>
+                <ComboBox ItemsSource="{Binding Profiles}"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding SelectedProfileId}"
+                          IsEnabled="{Binding ProfileEdit.CanEdit}"
+                          HorizontalAlignment="Stretch"
+                          AutomationProperties.Name="{ui:Loc profileName}">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Id, Converter={StaticResource ProfileName}}"/>
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Text="{Binding ProfileDescription}"
+                           TextWrapping="Wrap"
+                           Foreground="{DynamicResource Muted}"
+                           Margin="0,6,0,0"/>
+                <TextBlock Text="{Binding SuggestedTermsLine}"
+                           TextWrapping="Wrap"
+                           Foreground="{DynamicResource Muted}"
+                           Margin="0,4,0,0">
+                  <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                      <Setter Property="Visibility" Value="Visible"/>
+                      <Style.Triggers>
+                        <Trigger Property="Text" Value="">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
+                <Button Content="{ui:Loc addSuggested}"
+                        Command="{Binding AddSuggestedTermsCommand}"
+                        IsEnabled="{Binding CanAddSuggestedTerms}"
+                        Visibility="{Binding HasSuggestedTerms, Converter={StaticResource BoolVis}}"
+                        HorizontalAlignment="Left"
+                        Margin="0,8,0,0"
+                        AutomationProperties.Name="{ui:Loc addSuggested}"/>
+              </StackPanel>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,4" LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Visibility="{Binding ClipboardEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <CheckBox Content="{ui:Loc clipboardCheck}"
+                        IsChecked="{Binding WatchClipboard}"
+                        IsEnabled="{Binding ClipboardEdit.CanEdit}"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,4" LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Visibility="{Binding TargetFocusEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <CheckBox Content="{ui:Loc clipboardOnlyTarget}"
+                        IsChecked="{Binding OnlyWhenTargetFocused}"
+                        IsEnabled="{Binding TargetFocusEdit.CanEdit}"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,4" LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Visibility="{Binding CommandEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <CheckBox Content="{Binding CommandWarningText}"
+                        IsChecked="{Binding WatchCommands}"
+                        IsEnabled="{Binding CommandEdit.CanEdit}"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,4" LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Visibility="{Binding LinkEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <StackPanel>
+                <CheckBox Content="{ui:Loc watchLinks}"
+                          IsChecked="{Binding WatchLinks}"
+                          IsEnabled="{Binding LinkEdit.CanEdit}"/>
+                <TextBlock Text="{ui:Loc watchLinksHint}"
+                           Foreground="{DynamicResource Muted}"
+                           TextWrapping="Wrap"
+                           Margin="22,2,0,0"/>
+              </StackPanel>
+            </DockPanel>
+            <DockPanel LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Visibility="{Binding CryptoEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <CheckBox Content="{Binding CryptoWarningText}"
+                        IsChecked="{Binding WatchCryptoSwap}"
+                        IsEnabled="{Binding CryptoEdit.CanEdit}"/>
+            </DockPanel>
+            <TextBlock Text="{ui:Loc targetApps}" Margin="0,10,0,4"/>
+            <TextBlock Text="{ui:Loc targetAppsHint}"
+                       Foreground="{DynamicResource Muted}"/>
+            <TextBox Text="{Binding TargetApps, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     Height="120"
+                     Margin="0,8,0,0"
+                     VerticalScrollBarVisibility="Auto"
+                     AutomationProperties.Name="{ui:Loc targetAppsName}"/>
+            <Button Content="{ui:Loc restoreDefaults}"
+                    Command="{Binding RestoreTargetAppsCommand}"
+                    HorizontalAlignment="Left"
+                    Margin="0,8,0,0"/>
+            <TextBlock Text="{ui:Loc defaultWarningButton}" Margin="0,10,0,4"/>
+            <DockPanel LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Margin="8,0,0,0"
+                              Visibility="{Binding PasteActionEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <ComboBox ItemsSource="{Binding PasteActions}"
+                        DisplayMemberPath="Label"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding DefaultPasteAction}"
+                        HorizontalAlignment="Stretch"
+                        IsEnabled="{Binding PasteActionEdit.CanEdit}"
+                        AutomationProperties.Name="{ui:Loc defaultActionName}"/>
+            </DockPanel>
+            <TextBlock Text="{ui:Loc warningWaits}"
+                       Foreground="{DynamicResource Muted}"
+                       FontSize="12"/>
+            <TextBlock Text="{ui:Loc whenStop}" Margin="0,10,0,4"/>
+            <DockPanel LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Margin="8,0,0,0"
+                              Visibility="{Binding StopEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <ComboBox ItemsSource="{Binding StopBehaviors}"
+                        DisplayMemberPath="Label"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding StopBehavior}"
+                        HorizontalAlignment="Stretch"
+                        IsEnabled="{Binding StopEdit.CanEdit}"/>
+            </DockPanel>
+            <TextBlock Text="{Binding RedactionCaption}" Margin="0,10,0,4"/>
+            <DockPanel LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Margin="8,0,0,0"
+                              Visibility="{Binding RedactionEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <ComboBox ItemsSource="{Binding RedactionModes}"
+                        DisplayMemberPath="Label"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding RedactionMode}"
+                        HorizontalAlignment="Stretch"
+                        IsEnabled="{Binding RedactionEdit.CanEdit}"
+                        AutomationProperties.Name="{ui:Loc redactionModeName}"/>
+            </DockPanel>
+            <TextBlock Text="{Binding RedactionHint}"
+                       Foreground="{DynamicResource Muted}"
+                       FontSize="12"
+                       TextWrapping="Wrap"/>
+            <TextBlock Text="{ui:Loc minFindings}" Margin="0,10,0,4"/>
+            <DockPanel LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Visibility="{Binding MinHitsEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <TextBox Text="{Binding MinHitsForPopup, UpdateSourceTrigger=PropertyChanged}"
+                       HorizontalAlignment="Left"
+                       IsEnabled="{Binding MinHitsEdit.CanEdit}"
+                       AutomationProperties.Name="{ui:Loc minFindingsName}"/>
+            </DockPanel>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="{ui:Loc sitesTitle}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-sites"/>
+        <Border Style="{StaticResource SettingsCard}">
+          <StackPanel>
+            <DockPanel LastChildFill="True">
+              <local:LockMark DockPanel.Dock="Right"
+                              VerticalAlignment="Center"
+                              Visibility="{Binding SitesEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+              <TextBlock Text="{ui:Loc sitesHint}" TextWrapping="Wrap" Foreground="{DynamicResource Muted}"/>
+            </DockPanel>
+            <Grid MinHeight="72" MaxHeight="160" Margin="0,8,0,0">
+              <ListBox ItemsSource="{Binding Sites}"
+                       SelectedItem="{Binding SelectedSite}"
+                       MinHeight="72"
+                       MaxHeight="160"
+                       AutomationProperties.Name="{ui:Loc sitesTitle}"/>
+              <TextBlock Text="{ui:Loc sitesEmpty}"
+                         Margin="12,8,12,0"
+                         Foreground="{DynamicResource Muted}"
+                         IsHitTestVisible="False"
+                         VerticalAlignment="Top">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding ShowSitesEmpty}" Value="True">
+                        <Setter Property="Visibility" Value="Visible"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+            </Grid>
+            <DockPanel Margin="0,8,0,0" LastChildFill="True">
+              <Button DockPanel.Dock="Right"
+                      Content="{ui:Loc sitesAdd}"
+                      Command="{Binding AddSiteCommand}"
+                      IsEnabled="{Binding SitesEdit.CanEdit}"
+                      Margin="8,0,0,0"/>
+              <Grid>
+                <TextBox Text="{Binding NewSite, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{Binding SitesEdit.CanEdit}"
+                         AutomationProperties.Name="{ui:Loc sitesName}"/>
+                <TextBlock Text="{ui:Loc sitesPlaceholder}"
+                           Margin="12,0,8,0"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource Muted}"
+                           IsHitTestVisible="False">
+                  <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding NewSite}" Value="">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
+              </Grid>
+            </DockPanel>
+            <WrapPanel Margin="0,8,0,0">
+              <Button Content="{ui:Loc sitesRemove}"
+                      Command="{Binding RemoveSiteCommand}"
+                      IsEnabled="{Binding SitesEdit.CanEdit}"/>
+              <Button Content="{ui:Loc sitesImport}"
+                      Command="{Binding ImportSitesCommand}"
+                      IsEnabled="{Binding SitesEdit.CanEdit}"
+                      Margin="8,0,0,0"/>
+              <Button Content="{ui:Loc sitesExport}"
+                      Command="{Binding ExportSitesCommand}"
+                      Margin="8,0,0,0"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="{ui:Loc sectionChecks}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-checks"/>
+        <Border Style="{StaticResource SettingsCard}">
+          <StackPanel>
+            <TextBlock Text="{Binding OcrStatus}"
+                       Foreground="{DynamicResource Muted}"
+                       Margin="0,0,0,12"
+                       TextWrapping="Wrap"
+                       AutomationProperties.AutomationId="settings-ocr"/>
+            <ItemsControl ItemsSource="{Binding RuleGroups}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" AutomationProperties.AutomationId="{Binding AutomationId}"/>
+                    <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,2,0,6"/>
+                    <ItemsControl ItemsSource="{Binding Rules}">
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                          <DockPanel LastChildFill="True">
+                            <local:LockMark DockPanel.Dock="Right"
+                                            VerticalAlignment="Center"
+                                            Visibility="{Binding ShowLock, Converter={StaticResource BoolVis}}"/>
+                            <CheckBox Content="{Binding Label}"
+                                      IsChecked="{Binding IsOn}"
+                                      IsEnabled="{Binding CanEdit}"/>
+                          </DockPanel>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="{ui:Loc sectionTerms}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-terms"/>
+        <Border Style="{StaticResource SettingsCard}">
+          <StackPanel>
+            <TextBlock Text="{ui:Loc termsHint}"
+                       Foreground="{DynamicResource Muted}"/>
+            <Grid Margin="0,10,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <ComboBox Grid.Column="0"
+                        ItemsSource="{Binding TermKinds}"
+                        DisplayMemberPath="Label"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding TermKind}"
+                        MinWidth="120"/>
+              <TextBox Grid.Column="2"
+                       Text="{Binding TermText, UpdateSourceTrigger=PropertyChanged}"
+                       AutomationProperties.Name="{ui:Loc customTerm}"/>
+              <TextBox Grid.Column="4"
+                       Text="{Binding TermLabel, UpdateSourceTrigger=PropertyChanged}"
+                       AutomationProperties.Name="{ui:Loc customTermLabel}"/>
+            </Grid>
+            <WrapPanel Margin="0,8,0,0">
+              <WrapPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                  <Setter Property="Height" Value="36"/>
+                  <Setter Property="MinHeight" Value="36"/>
+                  <Setter Property="MaxHeight" Value="36"/>
+                  <Setter Property="Padding" Value="14,0"/>
+                  <Setter Property="Margin" Value="0,0,8,0"/>
+                  <Setter Property="VerticalAlignment" Value="Center"/>
+                  <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+              </WrapPanel.Resources>
+              <Button Content="{ui:Loc addTerm}" Command="{Binding AddTermCommand}"/>
+              <Button Click="OnAddFormat" AutomationProperties.Name="{ui:Loc addNumberFormat}">
+                <TextBlock Text="{ui:Loc addNumberFormat}" TextWrapping="NoWrap"/>
+              </Button>
+              <Button Content="{ui:Loc importList}" Command="{Binding ImportTermsCommand}"/>
+              <Button Content="{ui:Loc exportRules}" Command="{Binding ExportRulesCommand}" AutomationProperties.Name="{ui:Loc exportRules}"/>
+              <Button Content="{ui:Loc importRules}" Command="{Binding ImportRulesCommand}" AutomationProperties.Name="{ui:Loc importRules}"/>
+              <Button Content="{ui:Loc removeSelected}"
+                      Command="{Binding RemoveTermCommand}"
+                      CommandParameter="{Binding SelectedItem, ElementName=TermList}"/>
+            </WrapPanel>
+            <ListBox x:Name="TermList"
+                     ItemsSource="{Binding Terms}"
+                     Height="130"
+                     Margin="0,4,0,0"
+                     AutomationProperties.Name="{ui:Loc customTerms}">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock>
+                    <Run Text="{Binding Kind}"/>
+                    <Run Text=" · "/>
+                    <Run Text="{Binding Label}"/>
+                    <Run Text=": "/>
+                    <Run Text="{Binding Text}"/>
+                  </TextBlock>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="{ui:Loc sectionCopies}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-copies"/>
+        <Border Style="{StaticResource SettingsCard}">
+          <StackPanel>
+            <TextBlock Text="{ui:Loc copyName}" Margin="0,0,0,4"/>
+            <TextBox Text="{Binding CopyNamePattern, UpdateSourceTrigger=PropertyChanged}"
+                     HorizontalAlignment="Stretch"
+                     AutomationProperties.Name="{ui:Loc copyNamePattern}"/>
+            <RadioButton Content="{ui:Loc nextToOriginal}"
+                         GroupName="CopyPlace"
+                         Margin="0,10,0,0"
+                         IsChecked="{Binding CopyBeside}"
+                         AutomationProperties.Name="{ui:Loc saveBesideName}"/>
+            <RadioButton Content="{ui:Loc alwaysThisFolder}"
+                         GroupName="CopyPlace"
+                         Margin="0,6,0,0"
+                         IsChecked="{Binding CopyInFolder}"
+                         AutomationProperties.Name="{ui:Loc saveFolderName}"/>
+            <TextBlock Text="{Binding CopyFolder}"
+                       Foreground="{DynamicResource Muted}"
+                       TextWrapping="Wrap"
+                       Margin="0,6,0,0"/>
+            <Button Content="{ui:Loc chooseFolder}"
+                    Command="{Binding ChooseCopyFolderCommand}"
+                    HorizontalAlignment="Left"
+                    Margin="0,8,0,0"
+                    AutomationProperties.Name="{ui:Loc chooseFolderName}"/>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="{ui:Loc sectionAppearance}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-appearance"/>
+        <Border Style="{StaticResource SettingsCard}">
+          <StackPanel>
+            <TextBlock Text="{ui:Loc theme}" Margin="0,0,0,4"/>
+            <ComboBox ItemsSource="{Binding Themes}"
+                      DisplayMemberPath="Label"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding Theme}"
+                      HorizontalAlignment="Stretch"
+                      AutomationProperties.Name="{ui:Loc themeName}"/>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="{ui:Loc sectionStartup}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-startup"/>
+        <Border Style="{StaticResource SettingsCard}">
+          <CheckBox Content="{ui:Loc startWithWindows}" IsChecked="{Binding StartWithWindows}"/>
+        </Border>
+
+        <TextBlock Text="{ui:Loc sectionExplorer}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-explorer"/>
+        <Border Style="{StaticResource SettingsCard}">
+          <StackPanel>
+            <TextBlock Text="{ui:Loc explorerHint}"
+                       Foreground="{DynamicResource Muted}"/>
+            <WrapPanel Margin="0,8,0,0">
+              <Button Content="{ui:Loc addExplorer}" Command="{Binding AddExplorerMenuCommand}"/>
+              <Button Content="{ui:Loc removeExplorer}" Command="{Binding RemoveExplorerMenuCommand}"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="{ui:Loc sectionData}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-data"/>
+        <Border Style="{StaticResource SettingsCard}" Margin="0,0,0,12">
+          <StackPanel>
+            <TextBlock Text="{ui:Loc ignoreHint}"
+                       Foreground="{DynamicResource Warning}"/>
+            <local:LockMark Margin="0,8,0,0"
+                            Visibility="{Binding ShowIgnoreLock, Converter={StaticResource BoolVis}}"/>
+            <ListBox x:Name="IgnoredList"
+                     ItemsSource="{Binding Ignored}"
+                     Height="100"
+                     Margin="0,8,0,0"
+                     AutomationProperties.Name="{ui:Loc ignoredValues}"/>
+            <TextBlock Text="{ui:Loc keepMaps}" Margin="0,8,0,4"/>
+            <DockPanel LastChildFill="False" Margin="0,0,0,8">
+              <TextBox Text="{Binding MapRetentionDays, UpdateSourceTrigger=PropertyChanged}"
+                       Width="80"
+                       AutomationProperties.Name="{ui:Loc keepMapsName}"/>
+              <TextBlock Text="{ui:Loc days}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+            </DockPanel>
+            <CheckBox Content="{ui:Loc rememberLocations}"
+                      IsChecked="{Binding RememberFileLocations}"
+                      IsEnabled="{Binding FileLocationsEdit.CanEdit}"
+                      AutomationProperties.Name="{ui:Loc rememberLocations}"/>
+            <TextBlock Text="{ui:Loc rememberLocationsHint}"
+                       Foreground="{DynamicResource Muted}"
+                       TextWrapping="Wrap"
+                       Margin="0,4,0,8"/>
+            <local:LockMark Visibility="{Binding FileLocationsEdit.ShowLock, Converter={StaticResource BoolVis}}"/>
+            <WrapPanel Margin="0,8,0,0">
+              <Button Content="{ui:Loc openDataFolder}" Command="{Binding OpenDataFolderCommand}"/>
+              <Button Content="{ui:Loc deleteActivity}" Command="{Binding DeleteActivityLogCommand}"/>
+              <Button Content="{ui:Loc deleteIgnored}" Command="{Binding DeleteIgnoredListCommand}"/>
+              <Button Content="{ui:Loc deleteMaps}" Command="{Binding DeleteMapsCommand}"/>
+              <Button Content="{ui:Loc deleteAllData}" Command="{Binding DeleteAllDataCommand}"/>
+              <Button Content="{ui:Loc removeIgnored}"
+                      Command="{Binding RemoveIgnoredCommand}"
+                      CommandParameter="{Binding SelectedItem, ElementName=IgnoredList}"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+        <TextBlock Text="{ui:Loc sectionLanguage}" Style="{StaticResource SectionTitle}" AutomationProperties.AutomationId="settings-language"/>
+        <Border Style="{StaticResource SettingsCard}">
+          <StackPanel>
+            <TextBlock Text="{ui:Loc languageHint}"
+                       Foreground="{DynamicResource Muted}"
+                       TextWrapping="Wrap"/>
+            <ComboBox ItemsSource="{Binding InterfaceLanguages}"
+                      DisplayMemberPath="Label"
+                      SelectedValuePath="Code"
+                      SelectedValue="{Binding InterfaceLanguage}"
+                      Margin="0,8,0,0"
+                      AutomationProperties.AutomationId="LanguagePicker"
+                      AutomationProperties.Name="{ui:Loc languageName}"/>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="{ui:Loc developerTitle}" Style="{StaticResource SectionTitle}" Margin="0,16,0,0" AutomationProperties.AutomationId="settings-developer"/>
+        <TextBlock Text="{ui:Loc developerLanguage}" Foreground="{DynamicResource Muted}" Margin="0,0,0,4"/>
+        <ComboBox SelectedValue="{Binding UiLanguage}" SelectedValuePath="Tag" Margin="0,0,0,12">
+          <ComboBoxItem Tag="" Content="{ui:Loc languageDefault}"/>
+          <ComboBoxItem Tag="qps-ploc" Content="{ui:Loc pseudoLoc}"/>
+          <ComboBoxItem Tag="qps-rtl" Content="{ui:Loc pseudoRtl}"/>
+        </ComboBox>
+      </StackPanel>
+    </ScrollViewer>
+  </DockPanel>
+</UserControl>

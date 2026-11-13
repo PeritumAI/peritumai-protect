@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PeritumAI Protect event (one JSON line)",
+  "type": "object",
+  "required": ["ts", "source", "action", "hits"],
+  "additionalProperties": false,
+  "properties": {
+    "ts": { "type": "string", "format": "date-time" },
+    "source": { "type": "string", "enum": ["clipboard", "file", "manual"] },
+    "process": { "type": "string" },
+    "fileName": { "type": "string", "description": "Name only, never full path if user path is sensitive — store basename" },
+    "action": {
+      "type": "string",
+      "enum": ["allow", "warn", "ignore", "stop", "redact", "copy-made", "copy-refused", "false-positive", "error", "dismiss", "clickfix", "link_warning"]
+    },
+    "hits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["ruleId", "count"],
+        "properties": {
+          "ruleId": { "type": "string" },
+          "count": { "type": "integer" }
+        }
+      }
+    },
+    "snippetHash": { "type": "string", "description": "HMAC-SHA256 of the content hash, keyed per install. Not the text and not a raw SHA-256." },
+    "error": { "type": "string" },
+    "durationMs": { "type": "integer" },
+    "incomplete": { "type": "boolean" },
+    "timedOutRuleIds": { "type": "array", "items": { "type": "string" } },
+    "fileType": { "type": "string" },
+    "segmentCount": { "type": "integer" }
+  }
+}

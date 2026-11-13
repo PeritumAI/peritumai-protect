@@ -1,0 +1,19 @@
+{
+  "country": "HR",
+  "brands": [
+    {"name":"Zagrebačka banka","domains":["zaba.hr"],"keywords":["zaba"]},
+    {"name":"PBZ","domains":["pbz.hr"],"keywords":["pbz"]},
+    {"name":"HPB","domains":["hpb.hr"],"keywords":["hpb"]},
+    {"name":"Addiko Hrvatska","domains":["addiko.hr"],"keywords":["addikohr"]},
+    {"name":"Hrvatska pošta","domains":["posta.hr"],"keywords":[{"word":"posta","commonWord":true}]},
+    {"name":"eGrađani","domains":["gov.hr"],"keywords":["egradani"]},
+    {"name":"Hrvatski Telekom","domains":["hrvatskitelekom.hr"],"keywords":["hrvatskitelekom"]},
+    {"name":"A1 Hrvatska","domains":["a1.hr"],"keywords":["a1hrvatska"]},
+    {"name":"Telemach Hrvatska","domains":["telemach.hr"],"keywords":["telemach"]},
+    {"name":"Emmezeta","domains":["emmezeta.hr"],"keywords":["emmezeta"]},
+    {"name":"Konzum","domains":["konzum.hr"],"keywords":["konzum"]},
+    {"name":"Studenac","domains":["studenac.hr"],"keywords":["studenac"]},
+    {"name":"Tommy","domains":["tommy.hr"],"keywords":["tommy"]},
+    {"name":"Tisak","domains":["tisak.hr"],"keywords":["tisak"]}
+  ]
+}

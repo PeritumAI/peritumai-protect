@@ -1,0 +1,25 @@
+{
+  "id": "user.clinic.sample",
+  "name": "Clinic — sample identifiers",
+  "version": "1.0.0",
+  "enabled": false,
+  "rules": [
+    {
+      "id": "user.patient_mrn",
+      "label": "Medical record number",
+      "kind": "regex",
+      "pattern": "\\bMRN[:\\s-]?\\d{6,10}\\b",
+      "placeholder": "MRN",
+      "severity": "block"
+    },
+    {
+      "id": "user.drug_brand_internal",
+      "label": "Internal study code",
+      "kind": "prefix",
+      "patterns": ["STUDY-"],
+      "minLength": 8,
+      "placeholder": "STUDY",
+      "severity": "high"
+    }
+  ]
+}

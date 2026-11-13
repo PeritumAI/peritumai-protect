@@ -1,0 +1,37 @@
+{
+  "language": "en",
+  "whyRisky": "TODO",
+  "groups": [
+    {
+      "id": "ref.labels",
+      "displayLabel": "reference number",
+      "plural": "reference numbers",
+      "placeholder": "REF",
+      "labels": [
+        "Case No.",
+        "Case number",
+        "Matter",
+        "Matter no.",
+        "Our ref",
+        "Your ref",
+        "Ref.",
+        "File no.",
+        "Docket",
+        "Claim no.",
+        "Account no.",
+        "Client no.",
+        "Patient ID",
+        "MRN",
+        "Employee ID",
+        "Staff no."
+      ]
+    },
+    {
+      "id": "ref.finance",
+      "displayLabel": "invoice or policy number",
+      "plural": "invoice or policy numbers",
+      "placeholder": "REF",
+      "labels": ["Invoice no.", "Policy no."]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "country.pl",
+  "name": "Poland",
+  "version": "1.0.0",
+  "description": "PESEL.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "pl.pesel",
+      "label": "PESEL",
+      "displayLabel": "PESEL",
+      "plural": "PESELs",
+      "kind": "checksum",
+      "algorithm": "pesel",
+      "placeholder": "PESEL",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "Eleven digits. The month encodes the century, and the last digit is the check digit."
+    }
+  ]
+}

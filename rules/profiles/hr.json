@@ -1,0 +1,19 @@
+{
+  "id": "hr",
+  "name": "HR",
+  "description": "Salaries, identity numbers, IBANs, emails, and phones.",
+  "enabledRuleIds": ["pii.email", "pii.phone", "pii.jmbg", "fin.iban", "fin.salary", "ref.labels"],
+  "disabledRuleIds": ["secret.entropy"],
+  "defaultPasteAction": "ask",
+  "redactionMode": "reversible",
+  "stopBehavior": "restore-previous",
+  "watchLinks": true,
+  "suggestedTerms": [
+    {
+      "label": "Employee number",
+      "kind": "regex",
+      "text": "\\bEMP-\\d{4,}\\b",
+      "example": "EMP-2048"
+    }
+  ]
+}

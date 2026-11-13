@@ -1,0 +1,39 @@
+{
+  "id": "builtin.finance",
+  "name": "Cards and accounts",
+  "version": "1.0.0",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "fin.card",
+      "label": "Payment card",
+      "displayLabel": "payment card",
+      "plural": "payment cards",
+      "kind": "luhn",
+      "minLength": 13,
+      "placeholder": "CARD",
+      "severity": "high"
+    },
+    {
+      "id": "fin.iban",
+      "label": "IBAN",
+      "displayLabel": "IBAN",
+      "plural": "IBANs",
+      "kind": "iban",
+      "placeholder": "IBAN",
+      "severity": "high"
+    },
+    {
+      "id": "fin.salary",
+      "label": "Salary",
+      "displayLabel": "salary",
+      "plural": "salaries",
+      "kind": "regex",
+      "pattern": "(?i)\\b(?:salary|gross pay|annual salary)\\s*[:\\-]?\\s*(?:[$€£]|USD|EUR|GBP|RSD)?\\s*\\d{2,3}(?:[,\\s]\\d{3})*(?:\\.\\d{2})?\\b",
+      "placeholder": "SALARY",
+      "severity": "high",
+      "enabled": false,
+      "notes": "Off until a profile such as HR or Accountant turns it on."
+    }
+  ]
+}

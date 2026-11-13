@@ -1,0 +1,37 @@
+{
+  "id": "country.gb",
+  "name": "United Kingdom",
+  "version": "1.0.0",
+  "description": "National Insurance number and NHS number.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "gb.nino",
+      "label": "National Insurance number",
+      "displayLabel": "National Insurance number",
+      "plural": "National Insurance numbers",
+      "kind": "checksum",
+      "algorithm": "nino",
+      "placeholder": "NINO",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["NI number", "National Insurance", "NINO"],
+      "notes": "Two letters, six digits, and a suffix A to D. Some letter pairs are not issued. The spaced form is found without a label. A number without spaces needs a nearby label."
+    },
+    {
+      "id": "gb.nhs",
+      "label": "NHS number",
+      "displayLabel": "NHS number",
+      "plural": "NHS numbers",
+      "kind": "checksum",
+      "algorithm": "nhs",
+      "placeholder": "NHS",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["NHS"],
+      "notes": "Ten digits. The last digit is the mod 11 check. The grouped form is found without a label. An unformatted number needs a nearby label."
+    }
+  ]
+}

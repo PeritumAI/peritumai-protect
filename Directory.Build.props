@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Deterministic>true</Deterministic>
+    <Authors>Danilo Stojković</Authors>
+    <Company>Danilo Stojković (PeritumAI, peritumai.com)</Company>
+    <Copyright>Copyright 2026 Danilo Stojković</Copyright>
+  </PropertyGroup>
+</Project>

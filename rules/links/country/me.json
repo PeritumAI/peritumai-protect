@@ -1,0 +1,17 @@
+{
+  "country": "ME",
+  "brands": [
+    {"name":"CKB","domains":["ckb.me"],"keywords":["ckb"]},
+    {"name":"NLB Banka","domains":["nlb.me"],"keywords":["nlbme"]},
+    {"name":"Hipotekarna banka","domains":["hipotekarnabanka.me"],"keywords":["hipotekarna"]},
+    {"name":"Addiko Bank","domains":["addiko.me"],"keywords":["addikome"]},
+    {"name":"Prva banka","domains":["prvabanka.me"],"keywords":["prvabanka"]},
+    {"name":"Pošta Crne Gore","domains":["postacg.me"],"keywords":["postacg"]},
+    {"name":"eUprava","domains":["gov.me"],"keywords":["eupravame"]},
+    {"name":"Crnogorski Telekom","domains":["telekom.me"],"keywords":["telekomme"]},
+    {"name":"m:tel","domains":["mtel.me"],"keywords":["mtelme"]},
+    {"name":"One","domains":["one.me"],"keywords":["onecg"]},
+    {"name":"Voli","domains":["voli.me"],"keywords":["voli"]},
+    {"name":"Idea","domains":["idea.me"],"keywords":["ideame"]}
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "country": "BA",
+  "brands": [
+    {"name":"ASA Banka","domains":["asabanka.ba"],"keywords":["asabanka"]},
+    {"name":"UniCredit Bank","domains":["unicredit.ba"],"keywords":["unicreditba"]},
+    {"name":"NLB Banka","domains":["nlb.ba"],"keywords":["nlbba"]},
+    {"name":"Addiko Bosna","domains":["addiko.ba"],"keywords":["addikoba"]},
+    {"name":"Sparkasse Bank","domains":["sparkasse.ba"],"keywords":["sparkasseba"]},
+    {"name":"ProCredit Banka","domains":["procredit.ba"],"keywords":["procreditba"]},
+    {"name":"BH Pošta","domains":["posta.ba"],"keywords":["bhposta"]},
+    {"name":"eUprava BiH","domains":["gov.ba"],"keywords":["eupravaba"]},
+    {"name":"BH Telecom","domains":["bhtelecom.ba"],"keywords":["bhtelecom"]},
+    {"name":"m:tel","domains":["mtel.ba"],"keywords":["mtel"]},
+    {"name":"HT Eronet","domains":["hteronet.ba"],"keywords":["hteronet"]},
+    {"name":"OLX Bosna","domains":["olx.ba"],"keywords":["olxba"]},
+    {"name":"Union banka","domains":["unionbank.ba"],"keywords":["unionbank"]}
+  ]
+}

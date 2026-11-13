@@ -1,0 +1,35 @@
+{
+  "id": "country.es",
+  "name": "Spain",
+  "version": "1.0.0",
+  "description": "DNI and NIE.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "es.dni",
+      "label": "DNI",
+      "displayLabel": "DNI",
+      "plural": "DNIs",
+      "kind": "checksum",
+      "algorithm": "dni",
+      "placeholder": "DNI",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "Eight digits and a letter from the number modulo 23."
+    },
+    {
+      "id": "es.nie",
+      "label": "NIE",
+      "displayLabel": "NIE",
+      "plural": "NIEs",
+      "kind": "checksum",
+      "algorithm": "nie",
+      "placeholder": "NIE",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "X, Y, or Z, seven digits, and the same letter check as a DNI."
+    }
+  ]
+}

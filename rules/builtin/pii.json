@@ -1,0 +1,76 @@
+{
+  "id": "builtin.pii",
+  "name": "Personal data",
+  "version": "1.0.0",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "pii.email",
+      "label": "Email",
+      "displayLabel": "email",
+      "plural": "emails",
+      "kind": "regex",
+      "pattern": "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
+      "ignoreCase": true,
+      "placeholder": "EMAIL",
+      "severity": "warn"
+    },
+    {
+      "id": "pii.phone",
+      "label": "Phone",
+      "displayLabel": "phone",
+      "plural": "phones",
+      "kind": "phone",
+      "minLength": 8,
+      "placeholder": "PHONE",
+      "severity": "warn"
+    },
+    {
+      "id": "pii.ipv4",
+      "label": "IPv4",
+      "displayLabel": "IPv4 address",
+      "plural": "IPv4 addresses",
+      "kind": "regex",
+      "pattern": "\\b(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\b",
+      "placeholder": "IP",
+      "severity": "info",
+      "enabled": false
+    },
+    {
+      "id": "pii.dob",
+      "label": "Date of birth",
+      "displayLabel": "date of birth",
+      "plural": "dates of birth",
+      "kind": "regex",
+      "pattern": "(?i)\\b(?:date of birth|d\\.?o\\.?b\\.?)\\s*[:\\-]?\\s*\\d{1,2}[./-]\\d{1,2}[./-]\\d{2,4}\\b",
+      "placeholder": "DOB",
+      "severity": "high",
+      "enabled": false,
+      "notes": "Off until a profile such as Clinic turns it on. A date alone is not enough."
+    },
+    {
+      "id": "pii.health_id",
+      "label": "Health record number",
+      "displayLabel": "health record number",
+      "plural": "health record numbers",
+      "kind": "regex",
+      "pattern": "(?i)\\b(?:MRN|NHS|patient id|health id)\\s*[:#\\-]?\\s*[A-Z0-9]{6,12}\\b",
+      "placeholder": "HEALTH_ID",
+      "severity": "high",
+      "enabled": false,
+      "notes": "A labeled health identifier. Country ID packs are separate."
+    },
+    {
+      "id": "pii.matter",
+      "label": "Matter number",
+      "displayLabel": "matter number",
+      "plural": "matter numbers",
+      "kind": "regex",
+      "pattern": "\\bMAT-\\d{4}-\\d{3,}\\b",
+      "placeholder": "MATTER",
+      "severity": "high",
+      "enabled": false,
+      "notes": "Example only. It is not turned on by a profile. Use Add a number format for your own numbering."
+    }
+  ]
+}

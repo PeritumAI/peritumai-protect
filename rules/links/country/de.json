@@ -1,0 +1,22 @@
+{
+  "country": "DE",
+  "brands": [
+    {"name":"Commerzbank","domains":["commerzbank.de","commerzbank.com"],"keywords":["commerzbank"]},
+    {"name":"HypoVereinsbank","domains":["hypovereinsbank.de"],"keywords":["hypovereinsbank"]},
+    {"name":"Sparkasse","domains":["sparkasse.de"],"keywords":["sparkasse"]},
+    {"name":"Volksbank","domains":["volksbank.de"],"keywords":["volksbank"]},
+    {"name":"Postbank","domains":["postbank.de"],"keywords":["postbank"]},
+    {"name":"DKB","domains":["dkb.de"],"keywords":["dkb"]},
+    {"name":"comdirect","domains":["comdirect.de"],"keywords":["comdirect"]},
+    {"name":"Otto","domains":["otto.de"],"keywords":["otto"]},
+    {"name":"Zalando","domains":["zalando.de"],"keywords":["zalando"]},
+    {"name":"MediaMarkt","domains":["mediamarkt.de"],"keywords":["mediamarkt"]},
+    {"name":"Saturn","domains":["saturn.de"],"keywords":["saturn"]},
+    {"name":"O2","domains":["o2online.de"],"keywords":["o2online"]},
+    {"name":"1&1","domains":["1und1.de"],"keywords":["1und1"]},
+    {"name":"CHECK24","domains":["check24.de"],"keywords":["check24"]},
+    {"name":"idealo","domains":["idealo.de"],"keywords":["idealo"]},
+    {"name":"DPD","domains":["dpd.de"],"keywords":["dpd"]},
+    {"name":"Hermes","domains":["myhermes.de"],"keywords":["myhermes"]}
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "country": "ES",
+  "brands": [
+    {"name":"BBVA","domains":["bbva.es","bbva.com"],"keywords":["bbva"]},
+    {"name":"CaixaBank","domains":["caixabank.es"],"keywords":["caixabank"]},
+    {"name":"Bankinter","domains":["bankinter.com"],"keywords":["bankinter"]},
+    {"name":"Sabadell","domains":["sabadell.com"],"keywords":["sabadell"]},
+    {"name":"Unicaja","domains":["unicaja.es"],"keywords":["unicaja"]},
+    {"name":"Correos","domains":["correos.es"],"keywords":["correos"]},
+    {"name":"Clave","domains":["gob.es"],"keywords":["agenciatributaria","clave"]},
+    {"name":"Movistar","domains":["movistar.es"],"keywords":["movistar"]},
+    {"name":"MásMóvil","domains":["masmovil.es"],"keywords":["masmovil"]},
+    {"name":"El Corte Inglés","domains":["elcorteingles.es"],"keywords":["elcorteingles"]},
+    {"name":"PcComponentes","domains":["pccomponentes.com"],"keywords":["pccomponentes"]},
+    {"name":"Wallapop","domains":["wallapop.com"],"keywords":["wallapop"]},
+    {"name":"Ibercaja","domains":["ibercaja.es"],"keywords":["ibercaja"]},
+    {"name":"Kutxabank","domains":["kutxabank.es"],"keywords":["kutxabank"]}
+  ]
+}

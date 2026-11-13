@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PeritumAI Protect settings",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 3 },
+    "startWithWindows": { "type": "boolean", "default": true },
+    "watchClipboard": { "type": "boolean", "default": true },
+    "onlyWhenTargetFocused": { "type": "boolean", "default": true },
+    "targetProcesses": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [
+        "chrome.exe",
+        "msedge.exe",
+        "brave.exe",
+        "opera.exe",
+        "firefox.exe",
+        "vivaldi.exe",
+        "arc.exe",
+        "perplexity.exe",
+        "lmstudio.exe",
+        "LM Studio.exe",
+        "cursor.exe",
+        "code.exe",
+        "windsurf.exe",
+        "ollama.exe",
+        "ollama app.exe",
+        "chatgpt.exe",
+        "claude.exe",
+        "ms-teams.exe",
+        "slack.exe",
+        "copilot.exe"
+      ]
+    },
+    "defaultPasteAction": {
+      "type": "string",
+      "enum": ["ask", "ignore", "stop", "redact"],
+      "default": "ask"
+    },
+    "stopBehavior": {
+      "type": "string",
+      "enum": ["clear-clipboard", "restore-previous"],
+      "default": "restore-previous"
+    },
+    "copyNamePattern": {
+      "type": "string",
+      "default": "{name}_protect{ext}"
+    },
+    "copyFolderMode": {
+      "type": "string",
+      "enum": ["beside", "folder"],
+      "default": "beside"
+    },
+    "copyFolder": { "type": "string", "default": "" },
+    "enabledRuleIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "disabledRuleIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "minHitsForPopup": { "type": "integer", "minimum": 1, "default": 1 },
+    "showFirstRun": { "type": "boolean", "default": true }
+  }
+}

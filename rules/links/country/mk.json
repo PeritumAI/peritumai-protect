@@ -1,0 +1,17 @@
+{
+  "country": "MK",
+  "brands": [
+    {"name":"Komercijalna banka","domains":["kb.mk"],"keywords":["komercijalna"]},
+    {"name":"Stopanska banka","domains":["stb.com.mk"],"keywords":["stopanska"]},
+    {"name":"Halkbank","domains":["halkbank.mk"],"keywords":["halkbank"]},
+    {"name":"ProCredit Bank","domains":["procreditbank.mk"],"keywords":["procreditmk"]},
+    {"name":"Pošta","domains":["posta.com.mk"],"keywords":["postamk"]},
+    {"name":"Uslugi","domains":["gov.mk"],"keywords":["uslugi"]},
+    {"name":"Telekom","domains":["telekom.mk"],"keywords":["telekommk"]},
+    {"name":"A1","domains":["a1.mk"],"keywords":["a1mk"]},
+    {"name":"Neptun","domains":["neptun.mk"],"keywords":["neptun"]},
+    {"name":"Anhoch","domains":["anhoch.com.mk"],"keywords":["anhoch"]},
+    {"name":"Setec","domains":["setec.mk"],"keywords":["setec"]},
+    {"name":"EVN","domains":["evn.mk"],"keywords":["evnmk"]}
+  ]
+}

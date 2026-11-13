@@ -1,0 +1,17 @@
+{
+  "country": "SI",
+  "brands": [
+    {"name":"NLB","domains":["nlb.si"],"keywords":["nlb"]},
+    {"name":"SKB","domains":["skb.si"],"keywords":["skb"]},
+    {"name":"NKBM","domains":["nkbm.si"],"keywords":["nkbm"]},
+    {"name":"Addiko Slovenija","domains":["addiko.si"],"keywords":["addikosi"]},
+    {"name":"Pošta Slovenije","domains":["posta.si"],"keywords":[{"word":"posta","commonWord":true}]},
+    {"name":"eUprava Slovenija","domains":["gov.si"],"keywords":["eupravasi"]},
+    {"name":"A1 Slovenija","domains":["a1.si"],"keywords":["a1slovenija"]},
+    {"name":"Telemach Slovenija","domains":["telemach.si"],"keywords":["telemachsi"]},
+    {"name":"T-2","domains":["t-2.net"],"keywords":["t2"]},
+    {"name":"Mercator","domains":["mercator.si"],"keywords":["mercator"]},
+    {"name":"Big Bang","domains":["bigbang.si"],"keywords":["bigbang"]},
+    {"name":"Mimovrste","domains":["mimovrste.com"],"keywords":["mimovrste"]}
+  ]
+}

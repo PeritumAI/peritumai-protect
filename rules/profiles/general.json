@@ -1,0 +1,11 @@
+{
+  "id": "general",
+  "name": "General",
+  "description": "Everyday checks for emails, phones, cards, and keys.",
+  "enabledRuleIds": [],
+  "disabledRuleIds": ["secret.entropy"],
+  "defaultPasteAction": "ask",
+  "redactionMode": "reversible",
+  "stopBehavior": "restore-previous",
+  "suggestedTerms": []
+}

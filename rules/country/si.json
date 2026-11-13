@@ -1,0 +1,22 @@
+{
+  "id": "country.si",
+  "name": "Slovenia",
+  "version": "1.0.0",
+  "description": "EMŠO, the Slovenian personal identification number.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "si.emso",
+      "label": "EMŠO",
+      "displayLabel": "EMŠO",
+      "plural": "EMŠOs",
+      "kind": "checksum",
+      "algorithm": "jmbg-si",
+      "placeholder": "EMSO",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "Thirteen digits with the same check as a JMBG. The register is 50 to 59, or 05 for a foreigner registered in Slovenia."
+    }
+  ]
+}

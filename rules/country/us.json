@@ -1,0 +1,37 @@
+{
+  "id": "country.us",
+  "name": "United States",
+  "version": "1.0.0",
+  "description": "Social Security number and ITIN.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "us.ssn",
+      "label": "SSN",
+      "displayLabel": "SSN",
+      "plural": "SSNs",
+      "kind": "checksum",
+      "algorithm": "ssn",
+      "placeholder": "SSN",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["SSN", "Social Security"],
+      "notes": "Nine digits, or three-two-four with hyphens. 000, 666, and 900 to 999 are not area numbers. A phone shape is not a match. An unformatted number needs a nearby label."
+    },
+    {
+      "id": "us.itin",
+      "label": "ITIN",
+      "displayLabel": "ITIN",
+      "plural": "ITINs",
+      "kind": "checksum",
+      "algorithm": "itin",
+      "placeholder": "ITIN",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["ITIN"],
+      "notes": "Nine digits starting with 9. The fourth and fifth digits fall in an issued ITIN range. An unformatted number needs a nearby label."
+    }
+  ]
+}

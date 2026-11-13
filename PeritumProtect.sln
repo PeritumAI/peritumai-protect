@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B87672DC-8815-447A-B75C-4CC04574EB5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peritum.Protect.Core", "src\Peritum.Protect.Core\Peritum.Protect.Core.csproj", "{2C5F180C-9091-42FB-9635-749B073193C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peritum.Protect.App", "src\Peritum.Protect.App\Peritum.Protect.App.csproj", "{43A7C672-01E7-4B5B-B836-28B3FB3071AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AED0E921-10A0-4826-BA0B-3F80C099502E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peritum.Protect.Core.Tests", "tests\Peritum.Protect.Core.Tests\Peritum.Protect.Core.Tests.csproj", "{62D5BF97-9CD1-4F95-ACD6-F169D533B7C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peritum.Protect.App.Tests", "tests\Peritum.Protect.App.Tests\Peritum.Protect.App.Tests.csproj", "{0C1F8226-86AD-4B5F-94BB-C162622D1EA9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C5F180C-9091-42FB-9635-749B073193C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5F180C-9091-42FB-9635-749B073193C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5F180C-9091-42FB-9635-749B073193C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5F180C-9091-42FB-9635-749B073193C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43A7C672-01E7-4B5B-B836-28B3FB3071AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43A7C672-01E7-4B5B-B836-28B3FB3071AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43A7C672-01E7-4B5B-B836-28B3FB3071AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43A7C672-01E7-4B5B-B836-28B3FB3071AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D5BF97-9CD1-4F95-ACD6-F169D533B7C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D5BF97-9CD1-4F95-ACD6-F169D533B7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D5BF97-9CD1-4F95-ACD6-F169D533B7C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D5BF97-9CD1-4F95-ACD6-F169D533B7C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C1F8226-86AD-4B5F-94BB-C162622D1EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C1F8226-86AD-4B5F-94BB-C162622D1EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C1F8226-86AD-4B5F-94BB-C162622D1EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C1F8226-86AD-4B5F-94BB-C162622D1EA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2C5F180C-9091-42FB-9635-749B073193C2} = {B87672DC-8815-447A-B75C-4CC04574EB5D}
+		{43A7C672-01E7-4B5B-B836-28B3FB3071AD} = {B87672DC-8815-447A-B75C-4CC04574EB5D}
+		{62D5BF97-9CD1-4F95-ACD6-F169D533B7C3} = {AED0E921-10A0-4826-BA0B-3F80C099502E}
+		{0C1F8226-86AD-4B5F-94BB-C162622D1EA9} = {AED0E921-10A0-4826-BA0B-3F80C099502E}
+	EndGlobalSection
+EndGlobal

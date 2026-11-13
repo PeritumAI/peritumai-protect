@@ -1,0 +1,48 @@
+{
+  "id": "country.rs",
+  "name": "Serbia",
+  "version": "1.0.0",
+  "description": "JMBG, PIB, and Serbian phone numbers.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "pii.jmbg",
+      "label": "JMBG",
+      "displayLabel": "JMBG",
+      "plural": "JMBGs",
+      "kind": "checksum",
+      "algorithm": "jmbg",
+      "placeholder": "JMBG",
+      "severity": "high",
+      "category": "personal",
+      "notes": "Same 13-digit check as the previous built-in rule. Any valid JMBG is found, including numbers issued outside Serbia."
+    },
+    {
+      "id": "rs.pib",
+      "label": "PIB",
+      "displayLabel": "PIB",
+      "plural": "PIBs",
+      "kind": "checksum",
+      "algorithm": "pib",
+      "placeholder": "PIB",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["PIB", "poreski identifikacioni broj"],
+      "notes": "Nine digits. The last digit is ISO 7064 mod 11,10. A nearby label is required. Turned on for region RS or when a profile enables it."
+    },
+    {
+      "id": "rs.phone",
+      "label": "Serbian phone",
+      "displayLabel": "Serbian phone",
+      "plural": "Serbian phones",
+      "kind": "phone",
+      "patterns": ["^\\+381[1-9]\\d{6,9}$", "^06\\d{7,9}$", "^011\\d{6,8}$"],
+      "placeholder": "PHONE",
+      "severity": "warn",
+      "enabled": false,
+      "category": "personal",
+      "notes": "International +381, a mobile starting with 06, or a Belgrade 011 number."
+    }
+  ]
+}

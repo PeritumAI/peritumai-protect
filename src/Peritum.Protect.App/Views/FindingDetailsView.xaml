@@ -1,0 +1,87 @@
+<UserControl x:Class="Peritum.Protect.App.Views.FindingDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Peritum.Protect.App"
+             Background="{DynamicResource Card}">
+  <DockPanel>
+    <TextBlock DockPanel.Dock="Top"
+               Text="{local:Loc detailsExcludeHint}"
+               Foreground="{DynamicResource Muted}"
+               Margin="0,0,0,6"/>
+    <ListBox ItemsSource="{Binding Hits}"
+             MaxHeight="220"
+             AutomationProperties.Name="{local:Loc findingsListName}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal">
+              <CheckBox IsChecked="{Binding Exclude}" Content="{local:Loc excludeThisTime}" Margin="0,0,12,0"/>
+              <TextBlock Text="{Binding Line}" VerticalAlignment="Center"/>
+              <Button Content="{local:Loc notSensitive}"
+                      Margin="12,0,0,0"
+                      Command="{Binding NotSensitiveCommand}"
+                      Visibility="{Binding ShowNotSensitive, Converter={StaticResource BoolVis}}"/>
+              <Button Content="{local:Loc undoMark}"
+                      Margin="12,0,0,0"
+                      Command="{Binding UndoCommand}"
+                      Visibility="{Binding ShowUndo, Converter={StaticResource BoolVis}}"/>
+            </StackPanel>
+            <TextBlock Text="{Binding StatusText}"
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource Muted}"
+                       Margin="0,4,0,0"
+                       Visibility="{Binding HasStatus, Converter={StaticResource BoolVis}}"/>
+            <TextBlock Text="{local:Loc whyRisky}" FontWeight="SemiBold" Margin="0,6,0,0">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding HasWhy}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="{Binding WhyText}" TextWrapping="Wrap">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding HasWhy}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="{Binding WhyTip}" TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,2,0,0">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding HasWhy}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="{Binding PlaceWhy}" TextWrapping="Wrap" Margin="0,4,0,0">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding HasPlaceWhy}" Value="True">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </DockPanel>
+</UserControl>

@@ -1,0 +1,21 @@
+{
+  "country": "IN",
+  "brands": [
+    {"name":"State Bank of India","domains":["sbi.co.in"],"keywords":["sbi"]},
+    {"name":"HDFC Bank","domains":["hdfcbank.com"],"keywords":["hdfcbank","hdfc"]},
+    {"name":"ICICI Bank","domains":["icicibank.com"],"keywords":["icicibank","icici"]},
+    {"name":"Axis Bank","domains":["axisbank.com"],"keywords":["axisbank"]},
+    {"name":"Kotak","domains":["kotak.com"],"keywords":["kotak"]},
+    {"name":"Punjab National Bank","domains":["pnbindia.in"],"keywords":["pnbindia"]},
+    {"name":"Bank of Baroda","domains":["bankofbaroda.in"],"keywords":["bankofbaroda"]},
+    {"name":"Yes Bank","domains":["yesbank.in"],"keywords":["yesbank"]},
+    {"name":"IndusInd","domains":["indusind.com"],"keywords":["indusind"]},
+    {"name":"India government","domains":["gov.in"],"keywords":["indiapost","incometax","uidai"]},
+    {"name":"Flipkart","domains":["flipkart.com"],"keywords":["flipkart"]},
+    {"name":"Myntra","domains":["myntra.com"],"keywords":["myntra"]},
+    {"name":"Meesho","domains":["meesho.com"],"keywords":["meesho"]},
+    {"name":"Jio","domains":["jio.com"],"keywords":["jio"]},
+    {"name":"Airtel","domains":["airtel.in"],"keywords":["airtel"]},
+    {"name":"BSNL","domains":["bsnl.co.in"],"keywords":["bsnl"]}
+  ]
+}

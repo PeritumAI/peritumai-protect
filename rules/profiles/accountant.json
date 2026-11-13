@@ -1,0 +1,19 @@
+{
+  "id": "accountant",
+  "name": "Accountant/Finance",
+  "description": "Cards, IBANs, salaries, and emails.",
+  "enabledRuleIds": ["pii.email", "fin.card", "fin.iban", "fin.salary", "ref.labels", "ref.finance"],
+  "disabledRuleIds": ["secret.entropy"],
+  "defaultPasteAction": "ask",
+  "redactionMode": "reversible",
+  "stopBehavior": "restore-previous",
+  "watchLinks": true,
+  "suggestedTerms": [
+    {
+      "label": "Client account",
+      "kind": "regex",
+      "text": "\\bACCT-\\d{4,}\\b",
+      "example": "ACCT-10042"
+    }
+  ]
+}

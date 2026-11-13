@@ -1,0 +1,19 @@
+{
+  "id": "lawyer",
+  "name": "Lawyer",
+  "description": "Reference numbers after a label, client names, emails, and payment details.",
+  "enabledRuleIds": ["pii.email", "pii.phone", "ref.labels", "fin.iban", "fin.card"],
+  "disabledRuleIds": ["secret.entropy"],
+  "defaultPasteAction": "ask",
+  "redactionMode": "reversible",
+  "stopBehavior": "restore-previous",
+  "watchLinks": true,
+  "suggestedTerms": [
+    {
+      "label": "Client name",
+      "kind": "exact",
+      "text": "Jane Q. Client",
+      "example": "Jane Q. Client"
+    }
+  ]
+}

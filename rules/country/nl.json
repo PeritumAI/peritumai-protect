@@ -1,0 +1,23 @@
+{
+  "id": "country.nl",
+  "name": "Netherlands",
+  "version": "1.0.0",
+  "description": "BSN, the citizen service number.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "nl.bsn",
+      "label": "BSN",
+      "displayLabel": "BSN",
+      "plural": "BSNs",
+      "kind": "checksum",
+      "algorithm": "bsn",
+      "placeholder": "BSN",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["BSN", "burgerservicenummer"],
+      "notes": "Nine digits. The 11-proef must come out even, and the weighted sum must not be zero. Dots in the 4.2.3 grouping are found without a label. An unformatted number needs a nearby label."
+    }
+  ]
+}

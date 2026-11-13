@@ -1,0 +1,19 @@
+{
+  "id": "clinic",
+  "name": "Clinic/Health",
+  "description": "Health record numbers, dates of birth, emails, and phones.",
+  "enabledRuleIds": ["pii.email", "pii.phone", "pii.dob", "pii.health_id", "ref.labels"],
+  "disabledRuleIds": ["secret.entropy"],
+  "defaultPasteAction": "ask",
+  "redactionMode": "reversible",
+  "stopBehavior": "restore-previous",
+  "watchLinks": true,
+  "suggestedTerms": [
+    {
+      "label": "Patient name",
+      "kind": "exact",
+      "text": "Alex Patient",
+      "example": "Alex Patient"
+    }
+  ]
+}

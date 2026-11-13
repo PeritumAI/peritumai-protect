@@ -1,0 +1,81 @@
+<Window x:Class="Peritum.Protect.App.Views.PasteWarningWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Peritum.Protect.App.Views"
+        xmlns:ui="clr-namespace:Peritum.Protect.App"
+        Title="PeritumAI Protect"
+        AutomationProperties.AutomationId="ClipboardWarning"
+        Width="380"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="Manual"
+        Topmost="True"
+        ShowActivated="False"
+        ShowInTaskbar="False">
+  <StackPanel Margin="22" Background="{DynamicResource Background}">
+    <TextBlock Text="PeritumAI Protect"
+               FontSize="13"
+               FontWeight="SemiBold"
+               Foreground="{DynamicResource Accent}"/>
+    <TextBlock Text="{Binding Headline}"
+               FontSize="20"
+               FontWeight="SemiBold"
+               Margin="0,8,0,4"/>
+    <TextBlock Text="{Binding ProcessLine}" Foreground="{DynamicResource Muted}"/>
+    <TextBlock Text="{Binding Summary}"
+               TextWrapping="Wrap"
+               Foreground="{DynamicResource Muted}"
+               Margin="0,8,0,0"/>
+    <ListBox ItemsSource="{Binding Hits}"
+             SelectedItem="{Binding Selected}"
+             MaxHeight="220"
+             Margin="0,10,0,8"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Margin="0,2,0,4" Opacity="{Binding RowOpacity}">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding TypeLabel, Mode=OneWay}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding ShownValue, Mode=OneWay}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+            <TextBlock Text="{Binding StatusText}"
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource Muted}"
+                       FontSize="12"
+                       Margin="0,4,0,0"
+                       Visibility="{Binding HasStatus, Converter={StaticResource BoolVis}}"/>
+            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+              <Button Content="{ui:Loc show}"
+                      Command="{Binding ShowCommand}"
+                      AutomationProperties.Name="{Binding ShowAccess}"/>
+              <Button Content="{ui:Loc notSensitive}"
+                      Margin="8,0,0,0"
+                      Command="{Binding NotSensitiveCommand}"
+                      Visibility="{Binding ShowNotSensitive, Converter={StaticResource BoolVis}}"/>
+              <Button Content="{ui:Loc undoMark}"
+                      Margin="8,0,0,0"
+                      Command="{Binding UndoCommand}"
+                      Visibility="{Binding ShowUndo, Converter={StaticResource BoolVis}}"/>
+            </StackPanel>
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <TextBlock Text="{Binding Message}" Foreground="{DynamicResource Warning}" FontWeight="SemiBold"/>
+    <WrapPanel Margin="0,10,0,0">
+      <Button Content="{Binding RedactLabel}"
+              Style="{StaticResource PrimaryButton}"
+              IsDefault="{Binding RedactIsDefault}"
+              Command="{Binding RedactCommand}"/>
+      <Button Content="{Binding LeaveLabel}"
+              IsDefault="{Binding IgnoreIsDefault}"
+              Command="{Binding IgnoreCommand}"/>
+      <Button Content="{Binding StopLabel}"
+              Style="{StaticResource StopButton}"
+              IsDefault="{Binding StopIsDefault}"
+              Command="{Binding StopCommand}"/>
+      <Button Content="{Binding DetailsLabel}"
+              Command="{Binding DetailsCommand}"/>
+    </WrapPanel>
+  </StackPanel>
+</Window>

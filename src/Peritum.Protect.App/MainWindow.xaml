@@ -1,0 +1,1058 @@
+<Window x:Class="Peritum.Protect.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:Peritum.Protect.App.Views"
+        xmlns:local="clr-namespace:Peritum.Protect.App"
+        Title="PeritumAI Protect"
+        Width="980"
+        Height="680"
+        MinWidth="760"
+        MinHeight="540"
+        AllowDrop="True"
+        Drop="OnDrop"
+        DragOver="OnDragOver"
+        DragLeave="OnDragLeave"
+        Closing="OnClosing"
+        SizeChanged="OnSizeChanged"
+        UseLayoutRounding="True">
+  <Window.InputBindings>
+    <KeyBinding Key="F3" Command="{Binding NextFindingCommand}"/>
+    <KeyBinding Key="F3" Modifiers="Shift" Command="{Binding PreviousFindingCommand}"/>
+  </Window.InputBindings>
+  <Window.Resources>
+    <local:ReadOnlyImageConverter x:Key="ReadOnlyImage"/>
+    <DataTemplate x:Key="FindingRow">
+      <StackPanel Margin="8,6,0,8" Opacity="{Binding RowOpacity}">
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="{Binding TypeLabel, Mode=OneWay}" FontWeight="SemiBold"/>
+          <Run Text="  "/>
+          <Run Text="{Binding ShownValue, Mode=OneWay}" FontFamily="{StaticResource FontMono}"/>
+        </TextBlock>
+        <TextBlock Text="{Binding Location}" Foreground="{DynamicResource Muted}" FontSize="12" TextWrapping="Wrap"/>
+        <TextBlock Text="{Binding Context}" Foreground="{DynamicResource Muted}" FontSize="12" TextWrapping="Wrap"/>
+        <TextBlock Text="{local:Loc whyRisky}" FontWeight="SemiBold" FontSize="12" Margin="0,4,0,0" TextWrapping="Wrap">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+              <Setter Property="Visibility" Value="Collapsed"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding ShowInlineWhy}" Value="True">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <TextBlock Text="{Binding WhyText}" FontSize="12" TextWrapping="Wrap">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+              <Setter Property="Visibility" Value="Collapsed"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding ShowInlineWhy}" Value="True">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <TextBlock Text="{Binding WhyTip}" FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource Muted}">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+              <Setter Property="Visibility" Value="Collapsed"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding ShowInlineWhy}" Value="True">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <TextBlock Text="{Binding StatusText}" Foreground="{DynamicResource Muted}" FontSize="12" TextWrapping="Wrap" Visibility="{Binding HasStatus, Converter={StaticResource BoolVis}}"/>
+        <TextBlock Text="{Binding IndexLine}" Foreground="{DynamicResource Muted}" FontSize="12"/>
+        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+          <Button Content="{local:Loc show}" Command="{Binding ShowCommand}" AutomationProperties.Name="{Binding ShowAccess}"/>
+          <Button Content="{local:Loc notSensitive}" Margin="8,0,0,0" Command="{Binding NotSensitiveCommand}" AutomationProperties.Name="{Binding NotSensitiveAccess}" Visibility="{Binding ShowNotSensitive, Converter={StaticResource BoolVis}}"/>
+          <Button Content="{local:Loc linkTrust}" Margin="8,0,0,0" Command="{Binding TrustCommand}" AutomationProperties.Name="{Binding TrustAccess}" Visibility="{Binding ShowTrust, Converter={StaticResource BoolVis}}"/>
+          <Button Content="{local:Loc undoMark}" Margin="8,0,0,0" Command="{Binding UndoCommand}" Visibility="{Binding ShowUndo, Converter={StaticResource BoolVis}}"/>
+          <Button Content="{local:Loc copyLocation}" Margin="8,0,0,0" Command="{Binding CopyLocationCommand}" AutomationProperties.Name="{Binding CopyLocationAccess}" Visibility="{Binding ShowCopyLocation, Converter={StaticResource BoolVis}}"/>
+          <Button Content="{local:Loc copyAddress}" Margin="8,0,0,0" Command="{Binding CopyAddressCommand}" AutomationProperties.Name="{Binding CopyAddressAccess}" Visibility="{Binding ShowCopyAddress, Converter={StaticResource BoolVis}}"/>
+        </StackPanel>
+      </StackPanel>
+    </DataTemplate>
+    <Style x:Key="HeaderFileButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Height" Value="32"/>
+      <Setter Property="MinHeight" Value="32"/>
+      <Setter Property="MaxHeight" Value="32"/>
+      <Setter Property="Padding" Value="10,0"/>
+      <Setter Property="Margin" Value="8,0,0,0"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="FindingList" TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+      <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+      <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+      <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+      <Setter Property="ItemTemplate" Value="{StaticResource FindingRow}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="ItemContainerStyle">
+        <Setter.Value>
+          <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding AccessibleName}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="0"/>
+          </Style>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition x:Name="SidebarColumn" Width="220"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Column="0" Background="{StaticResource BrandNavy}">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="16,20,16,12">
+          <StackPanel Orientation="Horizontal">
+            <Viewbox Width="28" Height="28" VerticalAlignment="Center">
+              <Canvas Width="64" Height="64">
+                <Path Fill="{DynamicResource BrandGradient}" Data="M32,7 L56,15 V31 C56,45.5 46,56 32,60.5 C18,56 8,45.5 8,31 V15 Z"/>
+                <Path Fill="{StaticResource IconPaper}" Data="M19,20 h26 a3.5,3.5 0 0 1 3.5,3.5 v14 a3.5,3.5 0 0 1 -3.5,3.5 H31 l-7,7 v-7 h-5 a3.5,3.5 0 0 1 -3.5,-3.5 v-14 a3.5,3.5 0 0 1 3.5,-3.5 z"/>
+                <Rectangle Canvas.Left="22" Canvas.Top="2" Width="20" Height="10" RadiusX="4" RadiusY="4" Fill="{StaticResource BrandNavyRaised}" Stroke="{StaticResource IconPaper}" StrokeThickness="2"/>
+                <Rectangle Canvas.Left="20" Canvas.Top="25" Width="24" Height="3.5" RadiusX="1.75" RadiusY="1.75" Fill="{StaticResource IconLine}"/>
+                <Rectangle Canvas.Left="20" Canvas.Top="31" Width="24" Height="7" RadiusX="2" RadiusY="2" Fill="{StaticResource BrandNavy}"/>
+              </Canvas>
+            </Viewbox>
+            <TextBlock x:Name="Wordmark"
+                       Text="PeritumAI Protect"
+                       FontFamily="{StaticResource FontWordmark}"
+                       FontSize="18"
+                       Foreground="{StaticResource SidebarText}"
+                       Margin="10,0,0,0"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"/>
+          </StackPanel>
+          <TextBlock x:Name="Tagline"
+                     Text="{local:Loc tagline}"
+                     Foreground="{StaticResource SidebarMuted}"
+                     FontSize="12"
+                     Margin="0,8,0,0"
+                     TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Margin="12,8,12,16">
+          <StackPanel Orientation="Horizontal" Margin="8,0,8,8">
+            <Ellipse Width="8" Height="8" Fill="{Binding StatusBrush}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding StatusText}"
+                       Foreground="{StaticResource SidebarText}"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"/>
+          </StackPanel>
+          <Button Content="{Binding PauseButtonText}"
+                  Click="OnPause"
+                  Style="{StaticResource SidebarButton}"
+                  AutomationProperties.Name="{local:Loc pauseResumeName}">
+            <Button.ContextMenu>
+              <ContextMenu>
+                <MenuItem Header="{local:Loc pause15}" Click="OnPauseFor15" AutomationProperties.Name="{local:Loc pauseFor15}"/>
+                <MenuItem Header="{local:Loc pauseHour}" Click="OnPauseForHour" AutomationProperties.Name="{local:Loc pauseForHour}"/>
+                <MenuItem Header="{local:Loc pauseUntil}" Click="OnPauseUntilResume" AutomationProperties.Name="{local:Loc pauseUntilName}"/>
+              </ContextMenu>
+            </Button.ContextMenu>
+          </Button>
+        </StackPanel>
+
+        <StackPanel>
+          <Button x:Name="CheckNav" Content="{local:Loc navCheck}" Tag="Active" Style="{StaticResource SidebarButton}" Click="OnCheck" AutomationProperties.Name="{local:Loc navCheck}" AutomationProperties.AutomationId="Check"/>
+          <Button x:Name="ActivityNav" Content="{local:Loc navActivity}" Style="{StaticResource SidebarButton}" Click="OnActivity" AutomationProperties.Name="{local:Loc navActivity}" AutomationProperties.AutomationId="Activity"/>
+          <Button x:Name="RestoreNav" Content="{local:Loc navRestore}" Style="{StaticResource SidebarButton}" Click="OnRestore" AutomationProperties.Name="{local:Loc navRestore}" AutomationProperties.AutomationId="Restore"/>
+          <Button x:Name="SettingsNav" Content="{local:Loc navSettings}" Style="{StaticResource SidebarButton}" Click="OnSettings" AutomationProperties.Name="{local:Loc navSettings}" AutomationProperties.AutomationId="Settings"/>
+          <Button x:Name="HelpNav" Content="{local:Loc navHelp}" Style="{StaticResource SidebarButton}" Click="OnHelp" AutomationProperties.Name="{local:Loc navHelp}" AutomationProperties.AutomationId="Help"/>
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <Border Grid.Column="1" Background="{DynamicResource Background}">
+    <Grid Margin="24,20,24,16">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <TextBlock Text="{Binding PageTitle}" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+      <Grid Grid.Row="1">
+        <Grid x:Name="CheckPage">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <Grid x:Name="BatchPanel" Grid.Row="0" Grid.RowSpan="4" Panel.ZIndex="2" Visibility="Collapsed" Background="{DynamicResource Background}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Button Content="{Binding BatchSummary}"
+                    Command="{Binding ShowFileListCommand}"
+                    HorizontalContentAlignment="Left"
+                    Margin="0,0,0,8"
+                    AutomationProperties.Name="{local:Loc showFileList}"/>
+            <Grid Grid.Row="1" Margin="0,0,0,6">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="72"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Text="{local:Loc columnName}" FontWeight="SemiBold"/>
+              <TextBlock Grid.Column="1" Text="{local:Loc columnType}" FontWeight="SemiBold"/>
+              <TextBlock Grid.Column="2" Text="{local:Loc columnStatus}" FontWeight="SemiBold"/>
+            </Grid>
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+              <ItemsControl ItemsSource="{Binding BatchRows}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Grid Margin="0,2" MinHeight="36">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="72"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                      <TextBlock Grid.Column="1" Text="{Binding Type}" TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                      <TextBlock Grid.Column="2" Text="{Binding Status}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" ToolTip="{Binding Detail}"/>
+                      <WrapPanel Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="{local:Loc openFile}" MinHeight="32" Padding="8,4" Margin="0,2,0,2" Click="OnBatchOpen" AutomationProperties.Name="{local:Loc openFile}"/>
+                        <Button Content="{local:Loc showInFolder}" MinHeight="32" Padding="8,4" Margin="8,2,0,2" Click="OnBatchShowFolder" AutomationProperties.Name="{local:Loc showInFolder}"/>
+                        <Button Content="{local:Loc details}" MinHeight="32" Padding="8,4" Margin="8,2,0,2" Click="OnBatchDetails" IsEnabled="{Binding HasSession}" AutomationProperties.Name="{local:Loc details}"/>
+                      </WrapPanel>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+            <UniformGrid Grid.Row="3" Columns="2" Rows="2" Margin="0,12,0,0">
+              <Button Content="{local:Loc copiesForFindings}" Height="36" Margin="0,0,8,8" Click="OnCopyAll" IsEnabled="{Binding BatchIdle}" AutomationProperties.Name="{local:Loc copiesForFindings}"/>
+              <Button Content="{local:Loc reversibleCopiesForAll}" Height="36" Margin="0,0,0,8" Click="OnCopyAllReversible" IsEnabled="{Binding BatchIdle}" AutomationProperties.Name="{local:Loc reversibleCopiesForAll}"/>
+              <Button Content="{local:Loc exportFindings}" Height="36" Margin="0,0,8,0" Click="OnExportFindings" IsEnabled="{Binding BatchIdle}" AutomationProperties.Name="{local:Loc exportFindingsName}"/>
+              <Button Content="{local:Loc cancel}" Height="36" Click="OnCancelBatch" IsEnabled="{Binding BatchRunning}" AutomationProperties.Name="{local:Loc cancel}"/>
+            </UniformGrid>
+          </Grid>
+          <views:DropZoneView x:Name="DropZone"/>
+          <Button x:Name="BackToBatch"
+                  Grid.Row="0"
+                  Content="{local:Loc backToList}"
+                  Visibility="Collapsed"
+                  HorizontalAlignment="Stretch"
+                  HorizontalContentAlignment="Left"
+                  Click="OnBackToBatch"
+                  AutomationProperties.Name="{local:Loc backToList}"/>
+          <Button x:Name="CheckAnother"
+                  Grid.Row="0"
+                  Content="{local:Loc checkAnother}"
+                  Visibility="Collapsed"
+                  HorizontalAlignment="Stretch"
+                  HorizontalContentAlignment="Left"
+                  Click="OnCheckAnother"
+                  AutomationProperties.Name="{local:Loc checkAnotherName}"/>
+          <Border x:Name="ClipboardCard"
+                  Grid.Row="1"
+                  Background="{DynamicResource Card}"
+                  BorderBrush="{DynamicResource Line}"
+                  BorderThickness="1"
+                  CornerRadius="8"
+                  Padding="16"
+                  Margin="0,12,0,0">
+            <StackPanel>
+              <TextBlock Text="{Binding PolicyNotice}"
+                         TextWrapping="Wrap"
+                         Foreground="{DynamicResource Warning}"
+                         Margin="0,0,0,8">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                      <Trigger Property="Text" Value="">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                      </Trigger>
+                      <Trigger Property="Text" Value="{x:Null}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                      </Trigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+              <Border Margin="0,0,0,8" Padding="10" CornerRadius="6" Background="{DynamicResource AccentSoft}">
+                <Border.Style>
+                  <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding ShowFormatTip}" Value="True">
+                        <Setter Property="Visibility" Value="Visible"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </Border.Style>
+                <StackPanel>
+                  <TextBlock Text="{Binding FormatTip}" TextWrapping="Wrap"/>
+                  <Button Content="{local:Loc addNumberFormat}" HorizontalAlignment="Left" Margin="0,8,0,0" Click="OnFormatTip" AutomationProperties.Name="{local:Loc addNumberFormat}"/>
+                </StackPanel>
+              </Border>
+              <TextBlock Text="{Binding WatchHint}" TextWrapping="Wrap"/>
+              <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Foreground="{DynamicResource Muted}">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding ShowVersionNotice}" Value="True">
+                        <Setter Property="Visibility" Value="Visible"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+                <Run Text="{local:Loc versionQuiet}"/>
+                <Hyperlink Click="OnCheckNewer" AutomationProperties.Name="{local:Loc checkNewerCheck}"><Run Text="{local:Loc checkNewer}"/></Hyperlink>
+              </TextBlock>
+              <Button Content="{local:Loc whatIsChecked}"
+                      HorizontalAlignment="Left"
+                      Margin="0,8,0,0"
+                      Click="OnHelp"
+                      AutomationProperties.Name="{local:Loc whatIsCheckedName}"/>
+            </StackPanel>
+          </Border>
+
+          <Border x:Name="ProgressPanel"
+                  Grid.Row="2"
+                  Visibility="Collapsed"
+                  Background="{DynamicResource AccentSoft}"
+                  CornerRadius="8"
+                  Padding="14"
+                  Margin="0,12,0,0">
+            <StackPanel Orientation="Horizontal">
+              <ProgressBar Width="120" Height="6" IsIndeterminate="True" Margin="0,0,12,0"/>
+              <TextBlock Text="{local:Loc checking}" VerticalAlignment="Center" Foreground="{DynamicResource Fg}"/>
+            </StackPanel>
+          </Border>
+
+          <Border x:Name="ResultCard"
+                  Grid.Row="3"
+                  VerticalAlignment="Stretch"
+                  SizeChanged="OnResultCardSize"
+                  Visibility="Collapsed"
+                  BorderThickness="1"
+                  CornerRadius="8"
+                  Padding="16"
+                  Margin="0,12,0,0">
+            <Border.Style>
+              <Style TargetType="Border">
+                <Setter Property="Background" Value="{DynamicResource Card}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding CopyActionsVisible}" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource Success}"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <TextBlock Grid.Row="4"
+                         Margin="0,2,0,0"
+                         Foreground="{DynamicResource Muted}"
+                         FontSize="12"
+                         Text="{local:Loc privacy}"/>
+              <TextBlock Grid.Row="3"
+                         Text="{Binding ReversibleHint}"
+                         TextWrapping="Wrap"
+                         Foreground="{DynamicResource Muted}"
+                         Margin="0,2,0,0">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding CanMakeCopy}" Value="True">
+                        <Setter Property="Visibility" Value="Visible"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+              <WrapPanel x:Name="ResultActionBar" Grid.Row="2" Margin="0,4,0,0">
+                <Button Content="{local:Loc makeCopy}"
+                        Margin="0,0,8,0"
+                        Command="{Binding MakeCopyCommand}"
+                        IsEnabled="{Binding CanMakeCopy}"
+                        AutomationProperties.Name="{local:Loc makeCopy}">
+                  <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding PendingActionsVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Button.Style>
+                </Button>
+                <Button Content="{local:Loc makeReversibleCopy}"
+                        Margin="0,0,8,0"
+                        Command="{Binding MakeReversibleCopyCommand}"
+                        IsEnabled="{Binding CanMakeCopy}"
+                        AutomationProperties.Name="{local:Loc makeReversibleCopy}">
+                  <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding PendingActionsVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Button.Style>
+                </Button>
+                <Button Content="{local:Loc close}" Margin="0,0,8,0" Command="{Binding DismissCommand}" AutomationProperties.Name="{local:Loc close}">
+                  <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding PendingActionsVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Button.Style>
+                </Button>
+                <Button Content="{local:Loc openFolder}" Command="{Binding OpenFolderCommand}" AutomationProperties.Name="{local:Loc openFolder}">
+                  <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding CopyActionsVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Button.Style>
+                </Button>
+                <Button Content="{local:Loc openFile}" Command="{Binding OpenFileCommand}" AutomationProperties.Name="{local:Loc openFile}">
+                  <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding CopyActionsVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Button.Style>
+                </Button>
+                <Button Content="{local:Loc copyPath}" Command="{Binding CopyPathCommand}" AutomationProperties.Name="{local:Loc copyPath}">
+                  <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding CopyActionsVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Button.Style>
+                </Button>
+                <Button Content="{local:Loc cleanForSharing}" Margin="0,0,8,0" Command="{Binding CleanForSharingCommand}" IsEnabled="{Binding HasSourceFile}" AutomationProperties.Name="{local:Loc cleanForSharing}">
+                  <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding PendingActionsVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Button.Style>
+                </Button>
+              </WrapPanel>
+              <Expander Grid.Row="1" Header="{local:Loc cleanOptions}" IsExpanded="True" Margin="0,8,0,0" Visibility="{Binding HasCleanOptions, Converter={StaticResource BoolVis}}" AutomationProperties.Name="{local:Loc cleanOptions}">
+                <StackPanel Margin="0,6,0,0">
+                  <CheckBox Content="{local:Loc acceptTracked}" IsChecked="{Binding AcceptTrackedChanges}" AutomationProperties.Name="{local:Loc acceptTracked}">
+                    <CheckBox.Style>
+                      <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding ShowTrackedChangesOption}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </CheckBox.Style>
+                  </CheckBox>
+                  <CheckBox Content="{local:Loc removeNotes}" IsChecked="{Binding RemoveSpeakerNotes}" Margin="0,6,0,0" AutomationProperties.Name="{local:Loc removeNotes}">
+                    <CheckBox.Style>
+                      <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding ShowSpeakerNotesOption}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </CheckBox.Style>
+                  </CheckBox>
+                </StackPanel>
+              </Expander>
+              <Grid Grid.Row="0" ClipToBounds="True">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DockPanel LastChildFill="True">
+                  <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <StackPanel.Style>
+                      <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding HasSourceFile}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </StackPanel.Style>
+                    <Button Content="{local:Loc openFile}" Style="{StaticResource HeaderFileButton}" MinWidth="96" Command="{Binding OpenScannedFileCommand}" AutomationProperties.Name="{local:Loc openScannedFile}"/>
+                    <Button Content="{local:Loc showInFolder}" Style="{StaticResource HeaderFileButton}" MinWidth="120" Command="{Binding ShowScannedInFolderCommand}" AutomationProperties.Name="{local:Loc showScannedFolder}"/>
+                  </StackPanel>
+                  <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding ResultTitle}" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center"
+                               AutomationProperties.LiveSetting="Polite"/>
+                    <Button Grid.Column="1"
+                            Command="{Binding ShowListedFindingsCommand}"
+                            Margin="12,0,0,0"
+                            Padding="10,4"
+                            MinHeight="32"
+                            HorizontalAlignment="Left"
+                            HorizontalContentAlignment="Left"
+                            AutomationProperties.Name="{local:Loc showFindingsName}">
+                      <TextBlock Text="{Binding ResultBody, Mode=OneWay}" TextWrapping="Wrap"/>
+                    </Button>
+                    <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding HashLine}" Foreground="{DynamicResource Muted}" FontSize="12" FontFamily="{StaticResource FontMono}" Margin="0,4,0,0">
+                      <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                          <Style.Triggers>
+                            <Trigger Property="Text" Value="">
+                              <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                              <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                          </Style.Triggers>
+                        </Style>
+                      </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding SourceMissing}" Foreground="{DynamicResource Warning}" TextWrapping="Wrap" Margin="0,4,0,0">
+                      <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                          <Style.Triggers>
+                            <Trigger Property="Text" Value="">
+                              <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                              <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                          </Style.Triggers>
+                        </Style>
+                      </TextBlock.Style>
+                    </TextBlock>
+                    <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,6,0,0">
+                      <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasResultWhy}" Value="True">
+                              <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </StackPanel.Style>
+                      <TextBlock Text="{local:Loc whyRisky}" FontWeight="SemiBold"/>
+                      <TextBlock Text="{Binding ResultWhyText}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                      <TextBlock Text="{Binding ResultWhyTip}" TextWrapping="Wrap" Foreground="{DynamicResource Muted}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                  </Grid>
+                </DockPanel>
+                <Grid Grid.Row="1" Margin="0,4,0,0" ClipToBounds="True">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                  <WrapPanel Grid.Row="0" Margin="0,0,0,4">
+                    <TextBlock Text="{Binding FindingsCountLabel}" VerticalAlignment="Center" Margin="0,0,12,4" Foreground="{DynamicResource Muted}"/>
+                    <CheckBox Content="{local:Loc showAllFindings}"
+                              IsChecked="{Binding ShowAllFindings}"
+                              AutomationProperties.Name="{local:Loc showAllFindings}"/>
+                    <CheckBox Content="{local:Loc preview}"
+                              Margin="16,0,0,0"
+                              IsChecked="{Binding PreviewVisible}"
+                              AutomationProperties.Name="{local:Loc preview}"/>
+                    <Button Content="{local:Loc exportBundle}" Margin="16,0,0,0" Padding="8,2" MinHeight="0" Click="OnExportBundle" AutomationProperties.Name="{local:Loc exportBundle}">
+                      <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasSourceFile}" Value="True">
+                              <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </Button.Style>
+                    </Button>
+                    <Button Content="{local:Loc whyRisky}"
+                            Margin="16,0,0,0"
+                            Padding="8,2"
+                            MinHeight="0"
+                            Command="{Binding ToggleDetailsCommand}"
+                            AutomationProperties.Name="{local:Loc whyRisky}">
+                      <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowWhy}" Value="True">
+                              <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </Button.Style>
+                    </Button>
+                </WrapPanel>
+                <Grid Grid.Row="2">
+                  <Grid.Style>
+                    <Style TargetType="Grid">
+                      <Setter Property="Visibility" Value="Visible"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding PreviewVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Grid.Style>
+                  <Grid.RowDefinitions>
+                    <RowDefinition>
+                      <RowDefinition.Style>
+                        <Style TargetType="RowDefinition">
+                          <Setter Property="Height" Value="*"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasExpandedCategory}" Value="True">
+                              <Setter Property="Height" Value="Auto"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ShowAllFindings}" Value="True">
+                              <Setter Property="Height" Value="Auto"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </RowDefinition.Style>
+                    </RowDefinition>
+                    <RowDefinition>
+                      <RowDefinition.Style>
+                        <Style TargetType="RowDefinition">
+                          <Setter Property="Height" Value="0"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasExpandedCategory}" Value="True">
+                              <Setter Property="Height" Value="*"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ShowAllFindings}" Value="True">
+                              <Setter Property="Height" Value="*"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </RowDefinition.Style>
+                    </RowDefinition>
+                  </Grid.RowDefinitions>
+                  <ListBox x:Name="AllFindingsList"
+                           Grid.Row="1"
+                           ItemsSource="{Binding AllFindings}"
+                           SelectedItem="{Binding SelectedFinding}">
+                    <ListBox.Style>
+                      <Style TargetType="ListBox" BasedOn="{StaticResource FindingList}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding ShowAllFindings}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </ListBox.Style>
+                  </ListBox>
+                  <ListBox x:Name="CategoryFindingsList"
+                           Grid.Row="1"
+                           ItemsSource="{Binding ActiveFindings}"
+                           SelectedItem="{Binding SelectedFinding}">
+                    <ListBox.Style>
+                      <Style TargetType="ListBox" BasedOn="{StaticResource FindingList}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                          <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                              <Condition Binding="{Binding HasExpandedCategory}" Value="True"/>
+                              <Condition Binding="{Binding ShowAllFindings}" Value="False"/>
+                              <Condition Binding="{Binding CopyActionsVisible}" Value="False"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Visible"/>
+                          </MultiDataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </ListBox.Style>
+                  </ListBox>
+                <ScrollViewer x:Name="CategoryScroll" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding Categories}">
+                  <ItemsControl.Style>
+                    <Style TargetType="ItemsControl">
+                      <Setter Property="Visibility" Value="Visible"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding CopyActionsVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ShowAllFindings}" Value="True">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </ItemsControl.Style>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1" Padding="0,4">
+                        <Border.Style>
+                          <Style TargetType="Border">
+                            <Style.Triggers>
+                              <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                  <Condition Binding="{Binding IsExpanded}" Value="False"/>
+                                  <Condition Binding="{Binding DataContext.HasExpandedCategory, RelativeSource={RelativeSource AncestorType=Window}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                              </MultiDataTrigger>
+                            </Style.Triggers>
+                          </Style>
+                        </Border.Style>
+                        <StackPanel>
+                        <Button Command="{Binding ToggleCommand}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="0"
+                                HorizontalContentAlignment="Stretch"
+                                AutomationProperties.Name="{Binding ExpandName}">
+                        <DockPanel>
+                          <Border DockPanel.Dock="Right" CornerRadius="6" Padding="8,3" Margin="8,0,0,0" VerticalAlignment="Center">
+                            <Border.Style>
+                              <Style TargetType="Border">
+                                <Setter Property="Background" Value="{DynamicResource NeutralSurface}"/>
+                                <Style.Triggers>
+                                  <DataTrigger Binding="{Binding Chip}" Value="High">
+                                    <Setter Property="Background" Value="{DynamicResource HighSurface}"/>
+                                  </DataTrigger>
+                                  <DataTrigger Binding="{Binding Chip}" Value="Found">
+                                    <Setter Property="Background" Value="{DynamicResource WarningSurface}"/>
+                                  </DataTrigger>
+                                  <DataTrigger Binding="{Binding Chip}" Value="Check">
+                                    <Setter Property="Background" Value="{DynamicResource WarningSurface}"/>
+                                  </DataTrigger>
+                                </Style.Triggers>
+                              </Style>
+                            </Border.Style>
+                            <StackPanel Orientation="Horizontal">
+                              <TextBlock Text="{Binding BadgeIcon}" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" Margin="0,0,4,0" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                  <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource Neutral}"/>
+                                    <Style.Triggers>
+                                      <DataTrigger Binding="{Binding Chip}" Value="High">
+                                        <Setter Property="Foreground" Value="{DynamicResource Danger}"/>
+                                      </DataTrigger>
+                                      <DataTrigger Binding="{Binding Chip}" Value="Found">
+                                        <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
+                                      </DataTrigger>
+                                      <DataTrigger Binding="{Binding Chip}" Value="Check">
+                                        <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
+                                      </DataTrigger>
+                                    </Style.Triggers>
+                                  </Style>
+                                </TextBlock.Style>
+                              </TextBlock>
+                              <TextBlock Text="{Binding ChipText}" FontWeight="SemiBold" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                  <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource Neutral}"/>
+                                    <Style.Triggers>
+                                      <DataTrigger Binding="{Binding Chip}" Value="High">
+                                        <Setter Property="Foreground" Value="{DynamicResource Danger}"/>
+                                      </DataTrigger>
+                                      <DataTrigger Binding="{Binding Chip}" Value="Found">
+                                        <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
+                                      </DataTrigger>
+                                      <DataTrigger Binding="{Binding Chip}" Value="Check">
+                                        <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
+                                      </DataTrigger>
+                                    </Style.Triggers>
+                                  </Style>
+                                </TextBlock.Style>
+                              </TextBlock>
+                            </StackPanel>
+                          </Border>
+                          <Border Width="36" Height="36" CornerRadius="6" Margin="0,0,12,0" VerticalAlignment="Center">
+                            <Border.Style>
+                              <Style TargetType="Border">
+                                <Setter Property="Background" Value="{DynamicResource NeutralSurface}"/>
+                                <Style.Triggers>
+                                  <DataTrigger Binding="{Binding Id}" Value="personal">
+                                    <Setter Property="Background" Value="{DynamicResource AccentSoft}"/>
+                                  </DataTrigger>
+                                  <DataTrigger Binding="{Binding Id}" Value="payment">
+                                    <Setter Property="Background" Value="{DynamicResource AccentSoft}"/>
+                                  </DataTrigger>
+                                  <DataTrigger Binding="{Binding Id}" Value="secrets">
+                                    <Setter Property="Background" Value="{DynamicResource HighSurface}"/>
+                                  </DataTrigger>
+                                  <DataTrigger Binding="{Binding Id}" Value="custom">
+                                    <Setter Property="Background" Value="{DynamicResource WarningSurface}"/>
+                                  </DataTrigger>
+                                  <DataTrigger Binding="{Binding Id}" Value="links">
+                                    <Setter Property="Background" Value="{DynamicResource AccentSoft}"/>
+                                  </DataTrigger>
+                                </Style.Triggers>
+                              </Style>
+                            </Border.Style>
+                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                              <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                  <Setter Property="Foreground" Value="{DynamicResource Neutral}"/>
+                                  <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Id}" Value="personal">
+                                      <Setter Property="Foreground" Value="{DynamicResource Fg}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Id}" Value="payment">
+                                      <Setter Property="Foreground" Value="{DynamicResource Secondary}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Id}" Value="secrets">
+                                      <Setter Property="Foreground" Value="{DynamicResource Danger}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Id}" Value="custom">
+                                      <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Id}" Value="links">
+                                      <Setter Property="Foreground" Value="{DynamicResource Fg}"/>
+                                    </DataTrigger>
+                                  </Style.Triggers>
+                                </Style>
+                              </TextBlock.Style>
+                            </TextBlock>
+                          </Border>
+                          <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="12">
+                              <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                  <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                      <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                  </Style.Triggers>
+                                </Style>
+                              </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock Text="{Binding CountsText}" Margin="0,2,0,0">
+                              <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                  <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowCounts}" Value="False">
+                                      <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                  </Style.Triggers>
+                                </Style>
+                              </TextBlock.Style>
+                            </TextBlock>
+                          </StackPanel>
+                        </DockPanel>
+                        </Button>
+                        </StackPanel>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                </ScrollViewer>
+                </Grid>
+                <Border Grid.Row="2" Margin="0,0,0,8" Padding="8" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="6">
+                  <Border.Style>
+                    <Style TargetType="Border">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding PreviewVisible}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Border.Style>
+                  <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,6" LastChildFill="False">
+                      <Button DockPanel.Dock="Left" Content="{local:Loc previous}" Command="{Binding PreviousFindingCommand}" AutomationProperties.Name="{local:Loc previousFinding}"/>
+                      <Button DockPanel.Dock="Left" Content="{local:Loc next}" Margin="8,0,0,0" Command="{Binding NextFindingCommand}" AutomationProperties.Name="{local:Loc nextFinding}"/>
+                      <TextBlock Margin="12,0,0,0" VerticalAlignment="Center" Text="{Binding CurrentIndexLine}" Foreground="{DynamicResource Muted}"/>
+                      <TextBlock Margin="12,0,0,0" VerticalAlignment="Center" Text="{Binding CurrentLocation}" TextWrapping="Wrap"/>
+                    </DockPanel>
+                    <Grid>
+                      <ListBox x:Name="PreviewList" ItemsSource="{Binding PreviewLines}">
+                        <ListBox.Style>
+                          <Style TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+                            <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                              <DataTrigger Binding="{Binding PreviewIsImage}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                              </DataTrigger>
+                            </Style.Triggers>
+                          </Style>
+                        </ListBox.Style>
+                        <ListBox.ItemTemplate>
+                          <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                              <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                  <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                      <Setter Property="Background" Value="{DynamicResource AccentSoft}"/>
+                                    </DataTrigger>
+                                  </Style.Triggers>
+                                </Style>
+                              </StackPanel.Style>
+                              <ItemsControl ItemsSource="{Binding Spans}">
+                                <ItemsControl.ItemsPanel>
+                                  <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                  </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                  <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                      <TextBlock Text="{Binding Icon, Mode=OneWay}" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Margin="0,0,4,0" VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                          <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                              <DataTrigger Binding="{Binding IsHit}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                              </DataTrigger>
+                                            </Style.Triggers>
+                                          </Style>
+                                        </TextBlock.Style>
+                                      </TextBlock>
+                                      <TextBlock Text="{Binding Shown, Mode=OneWay}" TextWrapping="Wrap">
+                                        <TextBlock.Style>
+                                          <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                              <DataTrigger Binding="{Binding IsHit}" Value="True">
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                              </DataTrigger>
+                                              <DataTrigger Binding="{Binding Category}" Value="secrets">
+                                                <Setter Property="Foreground" Value="{DynamicResource Danger}"/>
+                                              </DataTrigger>
+                                              <DataTrigger Binding="{Binding Category}" Value="custom">
+                                                <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
+                                              </DataTrigger>
+                                            </Style.Triggers>
+                                          </Style>
+                                        </TextBlock.Style>
+                                      </TextBlock>
+                                    </StackPanel>
+                                  </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                              </ItemsControl>
+                            </StackPanel>
+                          </DataTemplate>
+                        </ListBox.ItemTemplate>
+                      </ListBox>
+                      <Viewbox Stretch="Uniform" MaxHeight="200" HorizontalAlignment="Left">
+                        <Viewbox.Style>
+                          <Style TargetType="Viewbox">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                              <DataTrigger Binding="{Binding PreviewIsImage}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                              </DataTrigger>
+                            </Style.Triggers>
+                          </Style>
+                        </Viewbox.Style>
+                        <Grid Width="{Binding ImageWidth}" Height="{Binding ImageHeight}">
+                          <Image Source="{Binding PreviewImagePath, Converter={StaticResource ReadOnlyImage}}"
+                                 Width="{Binding ImageWidth}" Height="{Binding ImageHeight}" Stretch="Fill"/>
+                          <ItemsControl ItemsSource="{Binding PreviewBoxes}">
+                            <ItemsControl.ItemsPanel>
+                              <ItemsPanelTemplate>
+                                <Canvas/>
+                              </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemContainerStyle>
+                              <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                              </Style>
+                            </ItemsControl.ItemContainerStyle>
+                            <ItemsControl.ItemTemplate>
+                              <DataTemplate>
+                                <Border Width="{Binding Width}" Height="{Binding Height}" BorderThickness="2" Background="#66000000">
+                                  <Border.Style>
+                                    <Style TargetType="Border">
+                                      <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Category}" Value="secrets">
+                                          <Setter Property="BorderBrush" Value="{DynamicResource Danger}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                          <Setter Property="BorderThickness" Value="3"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                    </Style>
+                                  </Border.Style>
+                                  <TextBlock Text="{Binding Caption, Mode=OneWay}" Foreground="White" FontSize="10" TextWrapping="Wrap"/>
+                                </Border>
+                              </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                          </ItemsControl>
+                        </Grid>
+                      </Viewbox>
+                    </Grid>
+                  </DockPanel>
+                </Border>
+                </Grid>
+                <views:FindingDetailsView x:Name="Details" Grid.Row="2" Visibility="Collapsed" Margin="0,8,0,0"/>
+              </Grid>
+            </Grid>
+          </Border>
+        </Grid>
+
+        <views:EventListView x:Name="ActivityPage" Visibility="Collapsed"/>
+        <views:SettingsView x:Name="SettingsPage" Visibility="Collapsed"/>
+        <views:HelpView x:Name="HelpPage" Visibility="Collapsed"/>
+        <views:RestoreView x:Name="RestorePage" Visibility="Collapsed"/>
+      </Grid>
+    </Grid>
+    </Border>
+  </Grid>
+</Window>

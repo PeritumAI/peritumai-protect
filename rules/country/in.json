@@ -1,0 +1,36 @@
+{
+  "id": "country.in",
+  "name": "India",
+  "version": "1.0.0",
+  "description": "Aadhaar and PAN.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "in.aadhaar",
+      "label": "Aadhaar",
+      "displayLabel": "Aadhaar",
+      "plural": "Aadhaar numbers",
+      "kind": "checksum",
+      "algorithm": "aadhaar",
+      "placeholder": "AADHAAR",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["Aadhaar"],
+      "notes": "Twelve digits. The first digit is 2 to 9. The last digit is the Verhoeff check. The grouped form is found without a label. An unformatted number needs a nearby label."
+    },
+    {
+      "id": "in.pan",
+      "label": "PAN",
+      "displayLabel": "PAN",
+      "plural": "PANs",
+      "kind": "checksum",
+      "algorithm": "pan",
+      "placeholder": "PAN",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "Five letters, four digits, and a letter. The fourth letter is a holder type."
+    }
+  ]
+}

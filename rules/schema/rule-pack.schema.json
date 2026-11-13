@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "peritum-protect-rule-pack",
+  "title": "PeritumAI Protect rule pack",
+  "type": "object",
+  "required": ["id", "name", "version", "rules"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9._-]+$" },
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "author": { "type": "string" },
+    "enabled": { "type": "boolean", "default": true },
+    "rules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "required": ["id", "label", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string", "description": "Shown in UI, e.g. Email" },
+        "displayLabel": { "type": "string", "minLength": 1, "description": "Singular count text with UI casing, e.g. OpenAI-style key" },
+        "plural": { "type": "string", "minLength": 1, "description": "Plural count text, e.g. emails or API keys" },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "regex",
+            "exact",
+            "prefix",
+            "luhn",
+            "iban",
+            "entropy",
+            "keyword",
+            "pem-block",
+            "phone",
+            "jmbg",
+            "checksum"
+          ]
+        },
+        "pattern": { "type": "string" },
+        "algorithm": { "type": "string", "description": "Checksum or format used when kind is checksum." },
+        "patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "ignoreCase": { "type": "boolean", "default": true },
+        "placeholder": {
+          "type": "string",
+          "description": "Replacement token without brackets, e.g. EMAIL"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["info", "warn", "high", "block"],
+          "default": "warn"
+        },
+        "minLength": { "type": "integer", "minimum": 1 },
+        "entropyBits": { "type": "number" },
+        "enabled": { "type": "boolean", "default": true },
+        "notes": { "type": "string" },
+        "keywords": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

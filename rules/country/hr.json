@@ -1,0 +1,23 @@
+{
+  "id": "country.hr",
+  "name": "Croatia",
+  "version": "1.0.0",
+  "description": "OIB, the Croatian personal identification number.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "hr.oib",
+      "label": "OIB",
+      "displayLabel": "OIB",
+      "plural": "OIBs",
+      "kind": "checksum",
+      "algorithm": "oib",
+      "placeholder": "OIB",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "keywords": ["OIB"],
+      "notes": "Eleven digits. The last digit is ISO 7064 mod 11,10. A nearby label is required."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+<UserControl x:Class="Peritum.Protect.App.Views.DropZoneView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Peritum.Protect.App"
+             xmlns:files="clr-namespace:Peritum.Protect.Core.Files;assembly=Peritum.Protect.Core"
+             Background="{DynamicResource Background}">
+  <Button Style="{StaticResource DropZoneButton}"
+          Click="OnClick"
+          MinHeight="160"
+          AutomationProperties.Name="{local:Loc dropChoose}">
+    <StackPanel>
+      <TextBlock x:Name="Title" Text="{local:Loc dropTitle}"
+                 FontSize="22"
+                 FontWeight="SemiBold"
+                 HorizontalAlignment="Center"/>
+      <TextBlock Text="{local:Loc browse}"
+                 Foreground="{DynamicResource Muted}"
+                 HorizontalAlignment="Center"
+                 Margin="0,6,0,0"/>
+      <TextBlock Text="{local:Loc privacy}"
+                 Foreground="{DynamicResource Accent}"
+                 FontWeight="SemiBold"
+                 HorizontalAlignment="Center"
+                 Margin="0,12,0,0"/>
+      <TextBlock Text="{x:Static files:SupportedFileTypes.DisplaySummary}"
+                 Foreground="{DynamicResource Muted}"
+                 HorizontalAlignment="Center"
+                 TextAlignment="Center"
+                 TextWrapping="Wrap"
+                 Margin="0,5,0,0"
+                 FontSize="13"/>
+    </StackPanel>
+  </Button>
+</UserControl>

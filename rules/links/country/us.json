@@ -1,0 +1,19 @@
+{
+  "country": "US",
+  "brands": [
+    {"name":"Truist","domains":["truist.com"],"keywords":["truist"]},
+    {"name":"Citizens","domains":["citizensbank.com"],"keywords":["citizensbank"]},
+    {"name":"Regions","domains":["regions.com"],"keywords":["regionsbank"]},
+    {"name":"KeyBank","domains":["key.com"],"keywords":["keybank"]},
+    {"name":"IRS","domains":["irs.gov"],"keywords":["irs"]},
+    {"name":"Login.gov","domains":["login.gov"],"keywords":["logingov"]},
+    {"name":"Social Security","domains":["ssa.gov"],"keywords":["ssa"]},
+    {"name":"Kohl's","domains":["kohls.com"],"keywords":["kohls"]},
+    {"name":"Macy's","domains":["macys.com"],"keywords":["macys"]},
+    {"name":"Nordstrom","domains":["nordstrom.com"],"keywords":["nordstrom"]},
+    {"name":"PenFed","domains":["penfed.org"],"keywords":["penfed"]},
+    {"name":"Fifth Third","domains":["fifththird.com"],"keywords":["fifththird"]},
+    {"name":"Huntington","domains":["huntington.com"],"keywords":["huntington"]},
+    {"name":"Allstate","domains":["allstate.com"],"keywords":["allstate"]}
+  ]
+}

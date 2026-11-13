@@ -1,0 +1,25 @@
+{
+  "id": "user.lawyer.sample",
+  "name": "Lawyer — sample matter terms",
+  "version": "1.0.0",
+  "description": "Example only. User replaces with their own numbers and party names.",
+  "enabled": false,
+  "rules": [
+    {
+      "id": "user.matter_id",
+      "label": "Matter number",
+      "kind": "regex",
+      "pattern": "\\bMAT-\\d{4}-\\d{3,}\\b",
+      "placeholder": "MATTER",
+      "severity": "high"
+    },
+    {
+      "id": "user.party_names",
+      "label": "Party names",
+      "kind": "exact",
+      "patterns": ["Acme Holdings d.o.o.", "Jane Q. Client"],
+      "placeholder": "PARTY",
+      "severity": "high"
+    }
+  ]
+}

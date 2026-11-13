@@ -1,0 +1,22 @@
+{
+  "id": "country.it",
+  "name": "Italy",
+  "version": "1.0.0",
+  "description": "Codice fiscale.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "it.codice",
+      "label": "Codice fiscale",
+      "displayLabel": "codice fiscale",
+      "plural": "codici fiscali",
+      "kind": "checksum",
+      "algorithm": "codice",
+      "placeholder": "CODICE",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "Sixteen characters. The last character is the check character."
+    }
+  ]
+}

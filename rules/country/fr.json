@@ -1,0 +1,22 @@
+{
+  "id": "country.fr",
+  "name": "France",
+  "version": "1.0.0",
+  "description": "NIR, the French social security number.",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "fr.nir",
+      "label": "NIR",
+      "displayLabel": "NIR",
+      "plural": "NIRs",
+      "kind": "checksum",
+      "algorithm": "nir",
+      "placeholder": "NIR",
+      "severity": "high",
+      "enabled": false,
+      "category": "personal",
+      "notes": "Fifteen characters. The last two digits are 97 minus the number modulo 97. Corsica uses 2A and 2B."
+    }
+  ]
+}

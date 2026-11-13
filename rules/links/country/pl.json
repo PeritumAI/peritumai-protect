@@ -1,0 +1,20 @@
+{
+  "country": "PL",
+  "brands": [
+    {"name":"PKO BP","domains":["pkobp.pl"],"keywords":["pkobp"]},
+    {"name":"Pekao","domains":["pekao.pl"],"keywords":["pekao"]},
+    {"name":"mBank","domains":["mbank.pl"],"keywords":["mbank"]},
+    {"name":"Millennium","domains":["millennium.pl"],"keywords":["millennium"]},
+    {"name":"Alior","domains":["alior.pl"],"keywords":["alior"]},
+    {"name":"BNP Paribas Polska","domains":["bnpparibas.pl"],"keywords":["bnpparibaspl"]},
+    {"name":"Poczta Polska","domains":["poczta-polska.pl"],"keywords":["pocztapolska"]},
+    {"name":"gov.pl","domains":["gov.pl"],"keywords":["podatki","profilzaufany"]},
+    {"name":"InPost","domains":["inpost.pl"],"keywords":["inpost"]},
+    {"name":"Allegro","domains":["allegro.pl"],"keywords":["allegro"]},
+    {"name":"Play","domains":["play.pl"],"keywords":["playpl"]},
+    {"name":"Plus","domains":["plus.pl"],"keywords":["pluspl"]},
+    {"name":"Media Expert","domains":["mediaexpert.pl"],"keywords":["mediaexpert"]},
+    {"name":"x-kom","domains":["x-kom.pl"],"keywords":["xkom"]},
+    {"name":"Empik","domains":["empik.com"],"keywords":["empik"]}
+  ]
+}
